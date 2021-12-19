@@ -1,0 +1,12 @@
+ProjectGuid=e01453c2-5520-4ff1-ada9-8dc5eec9c2e1
+SurfaceProcessIdentifier=2e3c1d88-a4e3-454e-8177-be204312ffd5
+Architecture=x64
+Configuration=Debug
+Language=CSharp
+ShadowCopyType=All
+ShadowCopyWorkerType=WpfCoreShadowCopyWorker
+FrameworkRuntimeName=.NETCoreApp
+FrameworkRuntimeVersion=6.0
+PlatformIdentifier=Windows,7.0,7.0;Managed;.NETCoreApp,6.0;;WpfCore
+FrameworkRuntimeAssemblyVersion=
+TelemetrySessionId=151849b0-4395-4228-8a2d-9a06c597abe6

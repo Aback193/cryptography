@@ -1,0 +1,163 @@
+Release Notes for Live Share Visual Studio Extension
+
+Latest
+
+- Fix intermittent hangs and unresponsiveness that may happen in Live Share if other extensions register slow trace listeners.
+- Fix random hangs and slowdowns when user closes VS while it is in Live Share or Codespace session.
+- Add commandline support to allow solution prescanning when connecting a client to a locally hosted Codespace.
+- Fix files opening read-only if they are outside of the current folder or solution directory in Codespace.
+- Remove invalid help text on join collaboration session in devenv /?
+- Fix an error that may happen when a guest opens a non-text file in a Live Share session.
+- Improve share performance and VS responsiveness in some conditions
+- Improve share performance and stability of Codespaces server
+- Fix an error that may happen in some cases when a user starts or joins a Live Share session.
+  https://developercommunity2.visualstudio.com/t/live-share-collaboration-session-initiat/1052674
+- Fix a bug where breakpoints won't be visible to VS guests if there is a space in the source file name.
+- Fix a bug where edit changes on Codespaces client sometimes may be lost when the user switches from file designer to file editor.
+- Provide new APIs for ASP.NET debugging in Codespaces to work with forwarded port when the shared port is in use on the client.
+- Add missing automation property names for Planned session dialog box, so screen reader can read the property name of UI element.
+- Improve document file path tooltips and grouping for files opened on Codespaces client.
+- Viewlet Accesibility issues fixed. Accelarator key is added and fixed focus lost issue when item is deleted.
+- Minor text changes
+- Allow 3rd party extensions integrate their ServiceHub protected operations with Live Share access control.
+- Improve error handling when session disconnects while guest opens a shared document.
+- Fix unexpected extra Save dialogs that may happen when a participant closes document windows in a collaboration session.
+- Fix "Failed to join a collaboration session, This part...cannot be instantiated" error in VS 16.0 guest.
+- Fix package load failure that may happen while running unit tests from code if LS extension is disabled.
+
+v1.0.3014 (October 15th, 2020)
+
+- Fix for a null reference exception that can occur when setting breakpoints in a Live Share session.
+- Fix to exclude Live Share project stub files from appearing in the Solution Explorer.
+- Live Share now uses the integrated terminal for all sessions using VS 16.8 and above.
+- Fix for breakpoints not being respected after a Live Share guest switches roles and starts a Live Share host session.
+- Fix for language services being broken after closing and reopening a folder/solution.
+- Add References node as a recognized node type for Codespaces consumption
+- Fix for "Find All" search not working on the guest side.
+
++ Insiders/Preview features
+- Added support for connecting to codespaces for GitHub repositories.
+
+v1.0.2900 (September 25th, 2020)
+
++ Updated extensibility NuGet packages to target net472 framework.
++ Bug fixes to following issues
+- Fix to improve thrown exception details for the Live Share guest
+- Fix sharing performance for solutions with lots of files outside solution directory.
+
++ New features
+- Updated to more modern crypto algorithms for key-exchange (DH -> ECDH) and for encryption and message integrity (AES + SHA2 -> AES-GCM)
+
++ Insiders/Preview features
+- Added support for Visual Studio GitHub-integrated authentication
+
++ Upcoming features
+
+v1.0.2740 (September 1st, 2020)
+
++ Bug fixes to following issues
+- Fix for Language Services in 16.4 and 16.6 (* check)
+- Fix for hex display of top level variables
+
++ Upcoming features
+- Planned Sessions: Live Share support for sessions that can be scheduled in advance
+
+v1.0.2708 (August 26th, 2020)
+
++ Bug fixes to following issues
+- Fix for Live Share join failure in Visual Studio 2017
+- Fix for Share and Join auth token issues
+
+v1.0.2666 (August 18th, 2020)
+
++ Bug fixes to following issues
+    - Update breakpoints in place instead of deleting/recreating
+    - Coediting performance bugs
+    - Codebugging bugs
+
+v1.0.2619 (August 11th, 2020)
+
+v1.0.2580 (August 4th, 2020)
+
+v1.0.2518 (July 23rd, 2020)
++ Bug fixes to following issues
+    - File download issue
+
+v1.0.2517 (July 21st, 2020)
++ Bug fixes to following issues
+    - Duplicate C# LSP entry from Tools > Options > Text Editor
+    - Rename/Delete folders with illegal characters
+
+v1.0.2472 (July 14th, 2020)
+
+v1.0.2427 (July 1st, 2020)
+
+    + Accesibility fixes (invisible separator and unreadable items in viewlet when hovering over in high contrast mode is fixed)
+
+v1.0.2377 (June 23rd, 2020)
+
+    + Authentication fixes for users having multiple accounts
+
+v1.02302 (June 10th, 2020)
+
+    + Setup / initialize fixes
+    + Security fixes
+    + Improvements in progress notifications
+
+v1.0.2274 (June 3rd, 2020)
+
+    + Null Reference crash (status bar)
+    + Fixes for Type Script and Python language services
+
+v1.0.2236 (May 21st, 2020)
+
+    + Fixes applied to contacts being slow to update status
+    + Fix for VS Crashes when using the File menu or the View / Other windows menu (https://developercommunity.visualstudio.com/content/problem/1034076/vs-crash-when-menu-view-other-windows-is-opened.html and https://github.com/MicrosoftDocs/live-share/issues/3542)
+
+
+v1.0.2104 (April 28th, 2020)
+
+    + Fix for Find All References in TypeScript
+
+
+v1.0.1783 (March 17th, 2020)
+
+    + Live Share supports [joining from the browser](https://aka.ms/vsls-web) now for all Live Share sessions [Public Preview]
+
+
+v1.0.1349 (December 10th, 2019)
+
+    + Security fix as described in CVE-2019-1486_ ( http://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-1486 ); LiveShare guests are now prompted for consent prior to browsing to host-specified URL.
+    + Contacts released for all VS users_ - We now have contacts for all our Live Share users. These give you the ability to directly invite your frequent and contextual collaborators to a Live Share session. [See how contacts in Live Share work.](https://aka.ms/vsls-contacts)
+    + General bug fixes, particularly in debugging, App Sharing insider feature and VS online support
+
+
+v1.0.1244 (November 13th, 2019)
+
+    + General support for enabling VS Codespaces launch (formerly called VS Online)
+
+
+v1.0.1056 (October 21st, 2019)
+
+    + General updates to support launch of new service at Ignite 2019
+    + General updates to Live Share language services
+
+
+v1.0.950 (October 8th, 2019)
+
+    + General updates to Live Share services for better performance and reliability
+
+v1.0.905 (September 30th, 2019)
+
+    + Updates to first-user workflow_ - We made some changes to the new user workflow, so they were able to better understand how to use Live Share.
+
+
+v1.0.869 (September 24th, 2019)
+
+    + General updates to Live Share language services
+    + General updates to Live Share services for better performance and reliability
+
+
+v1.0.17 (April 2nd, 2019)
+
+    + GA release of LiveShare in Visual Studio

@@ -1,0 +1,30 @@
+-Definisanje izvornih drajvova i liste direktorijuma koji se zaobilaze prilikom analize.
+
+-Analiza svih direktorijuma rekurzivnom metodom i prikupljanje (kopiranje) tekstualnih fajlova u jedan centralni direktorijum koji se takodje definise u aplikaciji. Recimo da je default C:\TOTAL.
+
+-Ekstenzije fajlova koji se kopiraju su *.txt, *.pgn (notacija,takodje tekstualni fajl), *.pdf, *.doc.
+
+-Moze se obezbediti i definisanje dodatne ekstenzije,ali se ce se fajlovi sa tom ekstenizijom tretirati kao *.txt.
+
+-Potrebno je sacuvati izvorne lokacije svih fajlova koji su otkriveni.
+
+-Posle kopiranja,potrebno je konverotvati *.pdf i *.doc fajlove u *.txt verziju,sa istim imenom. Za to se moze koristiti bilo koja komponenta sa interneta koja ima tu funkcionalnost (uz navodjenje reference).
+
+-Na taj nacin,svi tekstualni fajlovi ce na kraju imati identicnu ASCII reprezentaciju.
+
+-Finalni deo aplikacije je tekstualni searcher (sa ili bez case sensitivty opcije) nad tako formiranom bazom tekstualnih fajlova.
+
+
+Recimo upit:
+
+
+ISAAK NEWTON GRAVITY
+
+
+trebao bi da pronadje sve pojave ove tri reci u tekstualnoj bazi fajlova (ako se u njoj nalazi i neka knjiga iz fizike ili biografije fizicara).
+
+
+Rezultati se sortiraju. Dokument u kome su pronadjene 3 reci ide na vrh,onaj sa dve ispod,sa jednom na kraju liste...
+
+
+Posle sortiranja rezultata,treba obezbediti da se klikom na ime tog dokumenta on otvori sa izvorne lokacije (u word-u,pdf reader-u ili notepad-u) prema izvornom tipu fajla.

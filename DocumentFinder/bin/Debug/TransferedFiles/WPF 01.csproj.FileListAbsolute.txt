@@ -1,0 +1,21 @@
+C:\Users\Aback\Desktop\C# Projects\WPF 01\bin\Debug\net6.0-windows\WPF 01.exe
+C:\Users\Aback\Desktop\C# Projects\WPF 01\bin\Debug\net6.0-windows\WPF 01.deps.json
+C:\Users\Aback\Desktop\C# Projects\WPF 01\bin\Debug\net6.0-windows\WPF 01.runtimeconfig.json
+C:\Users\Aback\Desktop\C# Projects\WPF 01\bin\Debug\net6.0-windows\WPF 01.dll
+C:\Users\Aback\Desktop\C# Projects\WPF 01\bin\Debug\net6.0-windows\ref\WPF 01.dll
+C:\Users\Aback\Desktop\C# Projects\WPF 01\bin\Debug\net6.0-windows\WPF 01.pdb
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.csproj.AssemblyReference.cache
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\MainWindow.g.cs
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\App.g.cs
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01_MarkupCompile.cache
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01_MarkupCompile.lref
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\MainWindow.baml
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.g.resources
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.AssemblyInfoInputs.cache
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.AssemblyInfo.cs
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.csproj.CoreCompileInputs.cache
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.dll
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\ref\WPF 01.dll
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.pdb
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.genruntimeconfig.cache
