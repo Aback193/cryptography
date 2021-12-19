@@ -1,3 +1,5 @@
+Master predmet Kriptografija
+
 1. Fajlovi se kopiraju: \DocumentFinder\bin\Debug\TransferedFiles
 2. Log sa putanjama originalnih fajlova: \DocumentFinder\bin\Debug\TransferedFiles\TransferedFilesPaths.txt
 3. Konvertovani fajlovi takodje idu u: \DocumentFinder\bin\Debug\TransferedFiles
