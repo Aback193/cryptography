@@ -1,1 +1,0 @@
-Time	Process	ProcId	TID	Type	Message

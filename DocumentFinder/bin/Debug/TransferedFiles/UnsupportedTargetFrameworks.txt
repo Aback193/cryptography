@@ -1,3 +1,0 @@
-.NETFramework,Version=v4.0
-.NETFramework,Version=v4.5
-.NETFramework,Version=v4.5.1
