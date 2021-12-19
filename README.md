@@ -14,4 +14,4 @@ Funkcionalnost:
 
 Sta treba doraditi:
 
-GUI, da to lici na nesto. Pisanje izvestaja. Eventualna refaktorizacija koda, brzo je pisan code.
+Predstavljanje rezultata pretrage na zeljeni nacin. GUI, da to lici na nesto. Pisanje izvestaja. Eventualna refaktorizacija koda, brzo je pisan code.
