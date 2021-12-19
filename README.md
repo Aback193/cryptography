@@ -6,4 +6,4 @@
 
 Sta treba doraditi:
 
-GUI, da to lici na nesto. Pisanje izvestaja.
+GUI, da to lici na nesto. Pisanje izvestaja. Eventualna refaktorizacija koda, brzo je pisan code.
