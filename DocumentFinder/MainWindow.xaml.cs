@@ -30,7 +30,6 @@ namespace DocumentFinder
         List<string> pdfConversionFilePaths = new List<string>();
         string path = Directory.GetCurrentDirectory();
         string folderForFileCopy = "\\TransferedFiles";
-        string target = "";
 
         public MainWindow()
         {
@@ -247,6 +246,7 @@ namespace DocumentFinder
             }
         }
 
+        // Document conversion
         private void Button_Click1(object sender, RoutedEventArgs e)
         {
             toogleElemets(false);
@@ -334,8 +334,11 @@ namespace DocumentFinder
             return count;
         }
 
+        // Multi txt infile search for given keyword
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
+            toogleElemets(false);
+
             string targetD = path + folderForFileCopy;
             if (Directory.Exists(targetD))
             {
@@ -377,12 +380,62 @@ namespace DocumentFinder
                 var files = new List<FileInfo>();
                 var resultList = new List<SearchResults>();
 
-                Thread keyWordSearch = new Thread(() =>
+                Thread getTxtFiles = new Thread(() =>
                 {
                     var di = new DirectoryInfo(workDir);
                     var extensions = new List<string> { ".txt" };
                     var fs = di.GetFiles("*.*", SearchOption.TopDirectoryOnly).Where(f => extensions.Contains(f.Extension.ToLower())).ToArray();
                     files.AddRange(fs);
+                });
+                getTxtFiles.Start();
+
+                Thread keyWordSearch = new Thread(() =>
+                {
+                    while (getTxtFiles.IsAlive)
+                    {
+                    }
+                    Trace.WriteLine("FILES TXT FOR SEARCHING COUNT: " + files.Count().ToString());
+                    if (searchTerm != "")
+                    {
+                        foreach (var file in files)
+                        {
+                            Trace.WriteLine("FILES TXT FOR SEARCHING ARE: " + workDir + file.Name);
+
+                            if (File.Exists(workDir + file.Name) && searchTerm != "")
+                            {
+                                foreach (var term in combinationsList)
+                                {
+                                    // Read all lines in the file into an array of strings.
+                                    var lines = File.ReadAllLines(workDir + file.Name);
+                                    // In this file, extract the lines contain the keyword
+                                    var foundLines = lines.Where(x => x.Contains(term));
+                                    if (foundLines.Count() > 0)
+                                    {
+                                        var count = 0;
+                                        // Iterate each line that contains the keyword at least once to see how many times the word appear in each line
+                                        foreach (var line in foundLines)
+                                        {
+                                            var occurences = CountSubstring(line, term);
+                                            count += occurences;
+                                        }
+                                        // Add the result to the result list.
+                                        resultList.Add(new SearchResults() { FilePath = file.Name, Occurences = count, SearchWord = term });
+                                    }
+                                }
+                            }
+                        }
+                        // Display Search results. TO BE DONE !
+                        foreach (var result in resultList)
+                        {
+                            Trace.WriteLine("FilePath RESULTS ARE: " + result.FilePath);
+                            Trace.WriteLine("SearchWord RESULTS ARE: " + result.SearchWord);
+                            Trace.WriteLine("Occurences RESULTS ARE: " + result.Occurences);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Search term can't be empty");
+                    }                    
                 });
                 keyWordSearch.Start();
 
@@ -391,45 +444,10 @@ namespace DocumentFinder
                     while (keyWordSearch.IsAlive)
                     {
                     }
-                    Trace.WriteLine("FILES TXT FOR SEARCHING COUNT: " + files.Count().ToString());
-                    foreach (var file in files)
+                    Dispatcher.Invoke((Action)delegate ()
                     {
-                        Trace.WriteLine("FILES TXT FOR SEARCHING ARE: " + workDir + file.Name);
-
-                        if (File.Exists(workDir + file.Name) && searchTerm != "")
-                        {
-                            foreach (var term in combinationsList)
-                            {
-                                // Read all lines in the file into an array of strings.
-                                var lines = File.ReadAllLines(workDir + file.Name);
-                                // In this file, extract the lines contain the keyword
-                                var foundLines = lines.Where(x => x.Contains(term));
-                                if (foundLines.Count() > 0)
-                                {
-                                    var count = 0;
-                                    // Iterate each line that contains the keyword at least once to see how many times the word appear in each line
-                                    foreach (var line in foundLines)
-                                    {
-                                        var occurences = CountSubstring(line, term);
-                                        count += occurences;
-                                    }
-                                    // Add the result to the result list.
-                                    resultList.Add(new SearchResults() { FilePath = file.Name, Occurences = count, SearchWord = term });
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("Search term can't be empty");
-                        }
-                    }
-                    // Display Search results. TO BE DONE !
-                    foreach (var result in resultList)
-                    {
-                        Trace.WriteLine("FilePath RESULTS ARE: " + result.FilePath);
-                        Trace.WriteLine("SearchWord RESULTS ARE: " + result.SearchWord);
-                        Trace.WriteLine("Occurences RESULTS ARE: " + result.Occurences);
-                    }
+                        toogleElemets(true);
+                    });
                 }).Start();
             }
             else
