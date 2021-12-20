@@ -343,10 +343,10 @@ namespace DocumentFinder
                 searchTerm = searchTb.Text.ToString();
             }
             string[] searchTermSplit = searchTerm.Split(' ');
-            List<string> combinationsList = new List<string>(searchTermSplit.ToList());
+            List<string> combinationsList = new List<string>();
             combinationsList.Add(searchTerm);
             // Generate all substring combinations
-            for (int i = 0; i < searchTermSplit.Length - 1; i++)
+            for (int i = 0; i < searchTermSplit.Length; i++)
             {                
                 string temp = "";
                 for (int j = 0; j < searchTermSplit.Length - i; j++)
