@@ -52,10 +52,10 @@ namespace DocumentFinder
 
                 // Get current directory & make new directory for file transfer if non existent
                 
-                target = path + folderForFileCopy;
-                if (!Directory.Exists(target))
+                string targetD = path + folderForFileCopy;
+                if (!Directory.Exists(targetD))
                 {
-                    Directory.CreateDirectory(target);
+                    Directory.CreateDirectory(targetD);
                 }
                 else if (File.Exists(path + "\\TransferedFilesPaths.txt"))
                 {
@@ -81,7 +81,7 @@ namespace DocumentFinder
                     for (int i = 0; i < files.Count(); i++)
                     {
                         string sourceFile = System.IO.Path.Combine(files[i].DirectoryName.ToString(), files[i].ToString());
-                        string destFile = System.IO.Path.Combine(target, files[i].ToString());
+                        string destFile = System.IO.Path.Combine(targetD, files[i].ToString());
 
                         // Copy file to another location and overwrite the destination file
                         try
@@ -336,94 +336,106 @@ namespace DocumentFinder
 
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
-            string workDir = path + folderForFileCopy + "\\";
-            string searchTerm = "";
-            if (searchTb.Text.ToString() != "")
+            string targetD = path + folderForFileCopy;
+            if (Directory.Exists(targetD))
             {
-                searchTerm = searchTb.Text.ToString();
-            }
-            string[] searchTermSplit = searchTerm.Split(' ');
-            List<string> combinationsList = new List<string>();
-            combinationsList.Add(searchTerm);
-            // Generate all substring combinations
-            for (int i = 0; i < searchTermSplit.Length; i++)
-            {                
-                string temp = "";
-                for (int j = 0; j < searchTermSplit.Length - i; j++)
+                string workDir = path + folderForFileCopy + "\\";
+                string searchTerm = "";
+                if (searchTb.Text.ToString() != "")
                 {
-                    if(temp == "")
-                    {
-                        temp += searchTermSplit[j];
-                    }
-                    else
-                    {
-                        temp += " " + searchTermSplit[j];
-                    }
+                    searchTerm = searchTb.Text.ToString();
                 }
-                if (!combinationsList.Contains(temp))
+                string[] searchTermSplit = searchTerm.Split(' ');
+                List<string> combinationsList = new List<string>();
+                combinationsList.Add(searchTerm);
+                // Generate all substring combinations
+                for (int i = 0; i < searchTermSplit.Length; i++)
                 {
-                    combinationsList.Add(temp);
-                }                
-            }
-            // Test all substring combinations
-            foreach(string comb in combinationsList)
-            {
-                Trace.WriteLine("ALL COMBINATIONS ARE: " + comb);
-            }
-
-            var files = new List<FileInfo>();
-            var resultList = new List<SearchResults>();
-
-            Thread keyWordSearch = new Thread(() =>
-            {
-                var di = new DirectoryInfo(workDir);
-                var extensions = new List<string> { ".txt" };
-                var fs = di.GetFiles("*.*", SearchOption.TopDirectoryOnly).Where(f => extensions.Contains(f.Extension.ToLower())).ToArray();
-                files.AddRange(fs);
-            });
-            keyWordSearch.Start();
-
-            new Thread(() =>
-            {
-                while (keyWordSearch.IsAlive)
-                {
-                }
-                Trace.WriteLine("FILES TXT FOR SEARCHING COUNT: " + files.Count().ToString());
-                foreach (var file in files)
-                {                    
-                    Trace.WriteLine("FILES TXT FOR SEARCHING ARE: " + workDir + file.Name);
-
-                    if (File.Exists(workDir + file.Name) && searchTerm != "")
+                    string temp = "";
+                    for (int j = 0; j < searchTermSplit.Length - i; j++)
                     {
-                        foreach(var term in combinationsList)
+                        if (temp == "")
                         {
-                            // Read all lines in the file into an array of strings.
-                            var lines = File.ReadAllLines(workDir + file.Name);
-                            // In this file, extract the lines contain the keyword
-                            var foundLines = lines.Where(x => x.Contains(term));
-                            if (foundLines.Count() > 0)
-                            {
-                                var count = 0;
-                                // Iterate each line that contains the keyword at least once to see how many times the word appear in each line
-                                foreach (var line in foundLines)
-                                {
-                                    var occurences = CountSubstring(line, term);
-                                    count += occurences;
-                                }
-                                // Add the result to the result list.
-                                resultList.Add(new SearchResults() { FilePath = file.Name, Occurences = count, SearchWord = term });
-                            }
-                        }                        
+                            temp += searchTermSplit[j];
+                        }
+                        else
+                        {
+                            temp += " " + searchTermSplit[j];
+                        }
+                    }
+                    if (!combinationsList.Contains(temp))
+                    {
+                        combinationsList.Add(temp);
                     }
                 }
-                // Display Search results. TO BE DONE !
-                foreach(var result in resultList)
+                // Test all substring combinations
+                foreach (string comb in combinationsList)
                 {
-                    Trace.WriteLine("FilePath RESULTS ARE: " + result.FilePath);
-                    Trace.WriteLine("SearchWord RESULTS ARE: " + result.SearchWord);
-                    Trace.WriteLine("Occurences RESULTS ARE: " + result.Occurences);
+                    Trace.WriteLine("ALL COMBINATIONS ARE: " + comb);
                 }
-            }).Start();
+
+                var files = new List<FileInfo>();
+                var resultList = new List<SearchResults>();
+
+                Thread keyWordSearch = new Thread(() =>
+                {
+                    var di = new DirectoryInfo(workDir);
+                    var extensions = new List<string> { ".txt" };
+                    var fs = di.GetFiles("*.*", SearchOption.TopDirectoryOnly).Where(f => extensions.Contains(f.Extension.ToLower())).ToArray();
+                    files.AddRange(fs);
+                });
+                keyWordSearch.Start();
+
+                new Thread(() =>
+                {
+                    while (keyWordSearch.IsAlive)
+                    {
+                    }
+                    Trace.WriteLine("FILES TXT FOR SEARCHING COUNT: " + files.Count().ToString());
+                    foreach (var file in files)
+                    {
+                        Trace.WriteLine("FILES TXT FOR SEARCHING ARE: " + workDir + file.Name);
+
+                        if (File.Exists(workDir + file.Name) && searchTerm != "")
+                        {
+                            foreach (var term in combinationsList)
+                            {
+                                // Read all lines in the file into an array of strings.
+                                var lines = File.ReadAllLines(workDir + file.Name);
+                                // In this file, extract the lines contain the keyword
+                                var foundLines = lines.Where(x => x.Contains(term));
+                                if (foundLines.Count() > 0)
+                                {
+                                    var count = 0;
+                                    // Iterate each line that contains the keyword at least once to see how many times the word appear in each line
+                                    foreach (var line in foundLines)
+                                    {
+                                        var occurences = CountSubstring(line, term);
+                                        count += occurences;
+                                    }
+                                    // Add the result to the result list.
+                                    resultList.Add(new SearchResults() { FilePath = file.Name, Occurences = count, SearchWord = term });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Search term can't be empty");
+                        }
+                    }
+                    // Display Search results. TO BE DONE !
+                    foreach (var result in resultList)
+                    {
+                        Trace.WriteLine("FilePath RESULTS ARE: " + result.FilePath);
+                        Trace.WriteLine("SearchWord RESULTS ARE: " + result.SearchWord);
+                        Trace.WriteLine("Occurences RESULTS ARE: " + result.Occurences);
+                    }
+                }).Start();
+            }
+            else
+            {
+                MessageBox.Show("No files were coppied yet! Please click on " + btnFind.Content);
+            }
         }
     }
 }
