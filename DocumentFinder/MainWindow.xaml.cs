@@ -134,7 +134,7 @@ namespace DocumentFinder
 
         public class BuildFileList
         {
-            string excludeDir = "C:\\Windows";
+            List<string> excludeDirs = new List<string>() { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData" };
 
             // Find all Drives
             string[] drives = Directory.GetLogicalDrives();
@@ -151,7 +151,7 @@ namespace DocumentFinder
                     {
                         try
                         {
-                            if (!directoryInfo.FullName.ToString().Contains(excludeDir))
+                            if (!excludeDirs.Any( s => directoryInfo.FullName.ToString().Contains(s)))
                             {
                                 Trace.WriteLine("directoryInfo.FullName: " + directoryInfo.FullName.ToString());
                                 GetFilesFromDirectory(directoryInfo.FullName, files);
@@ -177,7 +177,7 @@ namespace DocumentFinder
                 {
                     try
                     {
-                        if (!directoryInfo.FullName.ToString().Contains(excludeDir))
+                        if (!excludeDirs.Any( s => directoryInfo.FullName.ToString().Contains(s)))
                         {
                             Trace.WriteLine("directoryInfo.FullName: " + directoryInfo.FullName.ToString());
                             GetFilesFromDirectory(directoryInfo.FullName, files);
