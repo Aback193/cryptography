@@ -120,22 +120,21 @@
                      Style="{StaticResource TextBoxStyle}"
                      VerticalScrollBarVisibility="Auto">
             </TextBox>
+            <CheckBox 
+                      Foreground="#ffffff" 
+                      FontFamily="Fonts/#Teko"
+                      Name="ocrOption"
+                      HorizontalAlignment="Center"
+                      Grid.Row="2">
+                Use OCR for PDF
+            </CheckBox>
 
             <Button Template="{StaticResource ButtonTemplate}" Content="Convert files"
                     Name="btnConvert"
                     Style="{StaticResource ButtonStyle}"
                     Click="Button_Click1"
-                    Grid.Row="2">
+                    Grid.Row="3">
             </Button>
-            <RadioButton 
-                      Foreground="#ffffff" 
-                      FontFamily="Fonts/#Teko"
-                      FontSize="20"
-                      Name="ocrOption"
-                      HorizontalAlignment="Center"
-                      Grid.Row="3">
-                Use OCR for PDF
-            </RadioButton>
 
         </Grid>
 
