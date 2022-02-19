@@ -138,7 +138,7 @@ namespace DocumentFinder
 
         public class BuildFileList
         {
-            string excludeDir = "C:\\Windows";
+            List<string> excludeDirs = new List<string>() { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData" };
 
             // Find all Drives
             string[] drives = Directory.GetLogicalDrives();
@@ -155,7 +155,7 @@ namespace DocumentFinder
                     {
                         try
                         {
-                            if (!directoryInfo.FullName.ToString().Contains(excludeDir))
+                            if (!excludeDirs.Any( s => directoryInfo.FullName.ToString().Contains(s)))
                             {
                                 Trace.WriteLine("directoryInfo.FullName: " + directoryInfo.FullName.ToString());
                                 GetFilesFromDirectory(directoryInfo.FullName, files);
@@ -181,7 +181,7 @@ namespace DocumentFinder
                 {
                     try
                     {
-                        if (!directoryInfo.FullName.ToString().Contains(excludeDir))
+                        if (!excludeDirs.Any( s => directoryInfo.FullName.ToString().Contains(s)))
                         {
                             Trace.WriteLine("directoryInfo.FullName: " + directoryInfo.FullName.ToString());
                             GetFilesFromDirectory(directoryInfo.FullName, files);
@@ -378,23 +378,15 @@ namespace DocumentFinder
         public class SearchResults
         {
             public string FilePath { get; set; }
-            public string SearchWord { get; set; }
-            public int Occurences { get; set; }
-        }
 
-        // The CountSubstring helper method counts the number of occurrences of a string in a string.
-        public static int CountSubstring(string text, string value)
-        {
-            int count = 0, minIndex = text.IndexOf(value, 0);
-            while (minIndex != -1)
+            public List<string> WordsFound { get; set; }
+
+            public SearchResults()
             {
-                minIndex = text.IndexOf(value, minIndex + value.Length);
-                count++;
+                WordsFound = new List<string>();
             }
-            return count;
         }
 
-        // Multi txt infile search for given keyword
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
             toogleElemets(false);
@@ -408,34 +400,7 @@ namespace DocumentFinder
                 {
                     searchTerm = searchTb.Text.ToString();
                 }
-                string[] searchTermSplit = searchTerm.Split(' ');
-                List<string> combinationsList = new List<string>();
-                combinationsList.Add(searchTerm);
-                // Generate all substring combinations
-                for (int i = 0; i < searchTermSplit.Length; i++)
-                {
-                    string temp = "";
-                    for (int j = 0; j < searchTermSplit.Length - i; j++)
-                    {
-                        if (temp == "")
-                        {
-                            temp += searchTermSplit[j];
-                        }
-                        else
-                        {
-                            temp += " " + searchTermSplit[j];
-                        }
-                    }
-                    if (!combinationsList.Contains(temp))
-                    {
-                        combinationsList.Add(temp);
-                    }
-                }
-                // Test all substring combinations
-                foreach (string comb in combinationsList)
-                {
-                    Trace.WriteLine("ALL COMBINATIONS ARE: " + comb);
-                }
+                List<string> SearchWords = searchTerm.Split(' ').ToList();
 
                 var files = new List<FileInfo>();
                 var resultList = new List<SearchResults>();
@@ -454,42 +419,82 @@ namespace DocumentFinder
                     while (getTxtFiles.IsAlive)
                     {
                     }
-                    Trace.WriteLine("FILES TXT FOR SEARCHING COUNT: " + files.Count().ToString());
-                    if (searchTerm != "")
+                    if (SearchWords.Count() > 0)
                     {
                         foreach (var file in files)
                         {
-                            Trace.WriteLine("FILES TXT FOR SEARCHING ARE: " + workDir + file.Name);
-
-                            if (File.Exists(workDir + file.Name) && searchTerm != "")
+                            if (File.Exists(workDir + file.Name) && SearchWords.Count() > 0)
                             {
-                                foreach (var term in combinationsList)
+                                SearchWords.ForEach(x => 
                                 {
-                                    // Read all lines in the file into an array of strings.
                                     var lines = File.ReadAllLines(workDir + file.Name);
-                                    // In this file, extract the lines contain the keyword
-                                    var foundLines = lines.Where(x => x.Contains(term));
-                                    if (foundLines.Count() > 0)
+
+                                    int foundLines;
+                                    bool caseSensitive = false;
+
+                                    Dispatcher.Invoke((Action)delegate ()
                                     {
-                                        var count = 0;
-                                        // Iterate each line that contains the keyword at least once to see how many times the word appear in each line
-                                        foreach (var line in foundLines)
-                                        {
-                                            var occurences = CountSubstring(line, term);
-                                            count += occurences;
-                                        }
-                                        // Add the result to the result list.
-                                        resultList.Add(new SearchResults() { FilePath = file.Name, Occurences = count, SearchWord = term });
+                                        if (cbxCS.IsChecked == true)
+                                            caseSensitive = true;
+                                    });
+
+                                    if (!caseSensitive)
+                                    {
+                                        foundLines = lines.Where(y => y.ToLower().Contains(x.ToLower())).Count();
                                     }
-                                }
+                                    else
+                                    {
+                                        foundLines = lines.Where(y => y.Contains(x)).Count();
+                                    }
+
+                                    if(foundLines > 0)
+                                    {
+                                        if(resultList.Where(z => z.FilePath == file.Name).Count() > 0)
+                                        {
+                                            resultList.Where(z => z.FilePath == file.Name).ToList().First().WordsFound.Add(x);
+                                        }
+                                        else
+                                        {
+                                            SearchResults AddResult = new SearchResults();
+                                            AddResult.FilePath = file.Name;
+                                            AddResult.WordsFound.Add(x);
+                                            
+                                            resultList.Add(AddResult);
+                                        }
+                                    }
+                                });
+                                
                             }
                         }
-                        // Display Search results. TO BE DONE !
+
+                        //sort results
+                        resultList.Sort(delegate(SearchResults x,SearchResults y)
+                        {
+                            if (x.WordsFound.Count() > y.WordsFound.Count()) return -1;
+                            else if (x.WordsFound.Count() < y.WordsFound.Count()) return 1;
+                            else if (String.Compare(x.FilePath, y.FilePath) < 0) return -1;
+                            return 1;
+                            
+                        });
+
+                        //display results
+                        Dispatcher.Invoke((Action)delegate ()
+                        {
+                            searchResultTB.Items.Clear();
+                        });
                         foreach (var result in resultList)
                         {
-                            Trace.WriteLine("FilePath RESULTS ARE: " + result.FilePath);
-                            Trace.WriteLine("SearchWord RESULTS ARE: " + result.SearchWord);
-                            Trace.WriteLine("Occurences RESULTS ARE: " + result.Occurences);
+                            Dispatcher.Invoke((Action)delegate ()
+                            {
+                                ListViewItem item = new ListViewItem();
+                                item.Content = result.FilePath;
+                                item.DataContext = result.FilePath;
+                                item.MouseDoubleClick += ListItemMouseDoubleClick;
+                                item.Content = item.Content.ToString() + "    Words found: "; 
+                                result.WordsFound.ForEach(x => item.Content = item.Content.ToString() + " " + x + ", ");
+								item.Content = item.Content.ToString().Remove(item.Content.ToString().Length - 2);
+                                searchResultTB.Items.Add(item);
+                            });
                         }
                     }
                     else
@@ -515,6 +520,34 @@ namespace DocumentFinder
                 MessageBox.Show("No files were coppied yet! Please click on " + btnFind.Content);
             }
         }
+
+        private void Close_App(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
+        }
+
+        private void ListItemMouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            var item = sender as ListViewItem;
+            OpenOriginalFile(path + folderForFileCopy + "\\" + item.DataContext.ToString());
+        }
+
+        private void OpenOriginalFile(string filename)
+        {
+            string filepath = path + folderForFileCopy + "\\" + System.IO.Path.GetFileNameWithoutExtension(filename);
+            if (File.Exists(filepath))
+                System.Diagnostics.Process.Start(filepath); //opens .docx .doc .pdf
+            else
+                System.Diagnostics.Process.Start(filename); //original file is .txt
+
+        }
+
 
 
         private IList<System.Drawing.Image> GetImagesFromPdfDict(PdfDictionary dict, PdfReader doc)

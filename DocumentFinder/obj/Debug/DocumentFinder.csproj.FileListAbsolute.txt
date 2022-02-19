@@ -1,3 +1,5 @@
+C:\Users\38162\Source\Repos\cryptography\DocumentFinder\obj\Debug\App.g.cs
+C:\Users\38162\Source\Repos\cryptography\DocumentFinder\obj\Debug\DocumentFinder_MarkupCompile.cache
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\bin\Debug\x86\leptonica-1.80.0.dll
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\bin\Debug\x86\tesseract41.dll
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\bin\Debug\x64\leptonica-1.80.0.dll
@@ -14,10 +16,7 @@ C:\Users\38162\Source\Repos\cryptography\DocumentFinder\bin\Debug\Xceed.Document
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\bin\Debug\Xceed.Words.NET.dll
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\bin\Debug\DocumentFormat.OpenXml.xml
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\bin\Debug\itextsharp.xml
-C:\Users\38162\Source\Repos\cryptography\DocumentFinder\obj\Debug\DocumentFinder.csprojAssemblyReference.cache
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\obj\Debug\MainWindow.g.cs
-C:\Users\38162\Source\Repos\cryptography\DocumentFinder\obj\Debug\App.g.cs
-C:\Users\38162\Source\Repos\cryptography\DocumentFinder\obj\Debug\DocumentFinder_MarkupCompile.cache
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\obj\Debug\DocumentFinder_MarkupCompile.lref
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\obj\Debug\MainWindow.baml
 C:\Users\38162\Source\Repos\cryptography\DocumentFinder\obj\Debug\DocumentFinder.g.resources
