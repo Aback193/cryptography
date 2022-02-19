@@ -7,8 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <StackPanel>            
+        <StackPanel>
             <Button Name="btnFind" Content="Start Finding" Height="50" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click"></Button>
+            <RadioButton Margin="10,10,0,13" Name="ocrOption" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="15">
+                Use OCR for PDF
+            </RadioButton>
             <Button Name="btnConvert" Content="Convert" Height="50" Width="100" VerticalAlignment="Top" HorizontalAlignment="Center" Click="Button_Click1"></Button>
             <Button Name="btnSearch" Content="Search Text" Height="50" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click2"></Button>
             <TextBox Height="30" Width="300" HorizontalAlignment="Center" VerticalAlignment="Center" Name="searchTb"></TextBox>
