@@ -1,0 +1,149 @@
+C:\Users\Aback\.nuget\packages\docx\2.0.0\LICENSE.txt
+C:\Users\Aback\.nuget\packages\itextsharp\5.5.13.2\notice.txt
+C:\Users\Aback\AppData\Local\BraveSoftware\Brave-Browser\User Data\chrome_shutdown_ms.txt
+C:\Users\Aback\AppData\Local\Docker\install-log.10.txt
+C:\Users\Aback\AppData\Local\Docker\install-log.6.txt
+C:\Users\Aback\AppData\Local\Docker\install-log.7.txt
+C:\Users\Aback\AppData\Local\Docker\install-log.8.txt
+C:\Users\Aback\AppData\Local\Docker\install-log.9.txt
+C:\Users\Aback\AppData\Local\Docker\install-log.txt
+C:\Users\Aback\AppData\Local\Docker\log.2.txt
+C:\Users\Aback\AppData\Local\Docker\log.3.txt
+C:\Users\Aback\AppData\Local\Docker\log.4.txt
+C:\Users\Aback\AppData\Local\Docker\log.5.txt
+C:\Users\Aback\AppData\Local\Docker\log.6.txt
+C:\Users\Aback\AppData\Local\Docker\log.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\LICENSE.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\etc\libexec-moved.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\etc\package-versions.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\mingw64\doc\git-credential-manager\LICENSE.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\mingw64\share\doc\xz\faq.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\mingw64\share\doc\xz\history.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\mingw64\share\doc\xz\lzma-file-format.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\mingw64\share\doc\xz\xz-file-format.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\mingw64\share\doc\xz\examples\00_README.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.6\resources\app\git\usr\share\licenses\ncurses\license.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\LICENSE.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\etc\libexec-moved.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\etc\package-versions.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\mingw64\doc\git-credential-manager\LICENSE.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\mingw64\share\doc\xz\faq.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\mingw64\share\doc\xz\history.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\mingw64\share\doc\xz\lzma-file-format.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\mingw64\share\doc\xz\xz-file-format.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\mingw64\share\doc\xz\examples\00_README.txt
+C:\Users\Aback\AppData\Local\GitHubDesktop\app-2.9.9\resources\app\git\usr\share\licenses\ncurses\license.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\edge_shutdown_ms.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\Default\Service Worker\CacheStorage\3cedfb74d44f2e84198d23075aef16c34a668ceb\index.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\Default\Service Worker\CacheStorage\c1eb0cde2406b6af565f825dcd492589d40ab644\index.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\Subresource Filter\Unindexed Rules\9.33.0\LICENSE.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\ZxcvbnData\2.0.0.0\english_wikipedia.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\ZxcvbnData\2.0.0.0\female_names.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\ZxcvbnData\2.0.0.0\male_names.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\ZxcvbnData\2.0.0.0\passwords.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\ZxcvbnData\2.0.0.0\surnames.txt
+C:\Users\Aback\AppData\Local\Microsoft\Edge\User Data\ZxcvbnData\2.0.0.0\us_tv_and_film.txt
+C:\Users\Aback\AppData\Local\Microsoft\Internet Explorer\brndlog.txt
+C:\Users\Aback\AppData\Local\Microsoft\VisualStudio\17.0_404abed4\sdk.txt
+C:\Users\Aback\AppData\Local\Microsoft\VisualStudio\17.0_404abed4\IntelliCodeModels\all_line-completion2_ExtractedData\vocab.txt
+C:\Users\Aback\AppData\Local\Microsoft\VisualStudio\17.0_404abed4\PackageCache\Format1\_58__58_nuget_58__58_.txt
+C:\Users\Aback\AppData\Local\Microsoft\VisualStudio\SettingsLogs\header.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Apps_{7fd1c6ca-0cb9-4267-bc81-04a28db9b093}\0.0.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Apps_{7fd1c6ca-0cb9-4267-bc81-04a28db9b093}\0.1.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Apps_{7fd1c6ca-0cb9-4267-bc81-04a28db9b093}\0.2.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Apps_{d43de9c5-b8bc-405c-9531-eccc80a6bcd9}\0.0.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Apps_{d43de9c5-b8bc-405c-9531-eccc80a6bcd9}\0.1.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Apps_{d43de9c5-b8bc-405c-9531-eccc80a6bcd9}\0.2.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Input_{af4bf55c-0067-4457-b8bf-2ba7a70f716d}\appsconversions.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Input_{af4bf55c-0067-4457-b8bf-2ba7a70f716d}\appsglobals.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Input_{af4bf55c-0067-4457-b8bf-2ba7a70f716d}\appssynonyms.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Input_{af4bf55c-0067-4457-b8bf-2ba7a70f716d}\settingsconversions.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Input_{af4bf55c-0067-4457-b8bf-2ba7a70f716d}\settingsglobals.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Input_{af4bf55c-0067-4457-b8bf-2ba7a70f716d}\settingssynonyms.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Settings_{7574ab39-3d5e-487a-9cd0-c322a35980fa}\0.0.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Settings_{7574ab39-3d5e-487a-9cd0-c322a35980fa}\0.1.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Settings_{7574ab39-3d5e-487a-9cd0-c322a35980fa}\0.2.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Settings_{97018d26-f667-4b54-b811-0024cafe322f}\0.0.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Settings_{97018d26-f667-4b54-b811-0024cafe322f}\0.1.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\ConstraintIndex\Settings_{97018d26-f667-4b54-b811-0024cafe322f}\0.2.filtertrie.intermediate.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\DeviceSearchCache\AppCache132898362778055263.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\DeviceSearchCache\AppCache132898363122533809.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\DeviceSearchCache\AppCache132898374293164389.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\DeviceSearchCache\AppCache132898682640210129.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\DeviceSearchCache\AppCache132898682731461266.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.Windows.Search_cw5n1h2txyewy\LocalState\DeviceSearchCache\SettingsCache.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.XboxGameOverlay_8wekyb3d8bbwe\LocalState\DiagOutputDir\LogFile_December_16_2021__7_51_51.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.XboxGameOverlay_8wekyb3d8bbwe\LocalState\DiagOutputDir\LogFile_December_17_2021__5_10_27.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.XboxGamingOverlay_8wekyb3d8bbwe\LocalState\profileDataSettings.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.XboxGamingOverlay_8wekyb3d8bbwe\LocalState\DiagOutputDir\XboxGamingOverlayTraces_FT_Server_20220125082429.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.XboxGamingOverlay_8wekyb3d8bbwe\LocalState\DiagOutputDir\XboxGamingOverlayTraces_FT_Server_20220210050029.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.XboxGamingOverlay_8wekyb3d8bbwe\LocalState\DiagOutputDir\XboxGamingOverlayTraces_FT_Server_20220218052038.txt
+C:\Users\Aback\AppData\Local\Packages\Microsoft.XboxGamingOverlay_8wekyb3d8bbwe\LocalState\DiagOutputDir\XboxGamingOverlayTraces_FT_Server_20220220220517.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\ThirdPartyNotices.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\git\dist\main.js.LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\github\dist\extension.js.LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\ms-vscode-remote.remote-wsl-recommender\LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\ms-vscode.js-debug\LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\ms-vscode.js-debug\src\bootloader.bundle.js.LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\ms-vscode.js-debug\src\extension.js.LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\ms-vscode.js-debug\src\watchdog.bundle.js.LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\ms-vscode.js-debug-companion\LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\ms-vscode.js-debug-companion\out\extension.js.LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\ms-vscode.references-view\LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\npm\dist\npmMain.js.LICENSE.txt
+C:\Users\Aback\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\theme-seti\ThirdPartyNotices.txt
+C:\Users\Aback\AppData\Local\Temp\VSWebView2Cache\3d8bfd2b-0c46-4baa-940f-a3fa0bef3d5e\EBWebView\Subresource Filter\Unindexed Rules\9.33.0\LICENSE.txt
+C:\Users\Aback\AppData\Local\Temp\VSWebView2Cache\3d8bfd2b-0c46-4baa-940f-a3fa0bef3d5e\EBWebView\ZxcvbnData\2.0.0.0\english_wikipedia.txt
+C:\Users\Aback\AppData\Local\Temp\VSWebView2Cache\3d8bfd2b-0c46-4baa-940f-a3fa0bef3d5e\EBWebView\ZxcvbnData\2.0.0.0\female_names.txt
+C:\Users\Aback\AppData\Local\Temp\VSWebView2Cache\3d8bfd2b-0c46-4baa-940f-a3fa0bef3d5e\EBWebView\ZxcvbnData\2.0.0.0\male_names.txt
+C:\Users\Aback\AppData\Local\Temp\VSWebView2Cache\3d8bfd2b-0c46-4baa-940f-a3fa0bef3d5e\EBWebView\ZxcvbnData\2.0.0.0\passwords.txt
+C:\Users\Aback\AppData\Local\Temp\VSWebView2Cache\3d8bfd2b-0c46-4baa-940f-a3fa0bef3d5e\EBWebView\ZxcvbnData\2.0.0.0\surnames.txt
+C:\Users\Aback\AppData\Local\Temp\VSWebView2Cache\3d8bfd2b-0c46-4baa-940f-a3fa0bef3d5e\EBWebView\ZxcvbnData\2.0.0.0\us_tv_and_film.txt
+C:\Users\Aback\AppData\Roaming\obs-virtualcam.txt
+C:\Users\Aback\AppData\Roaming\Code\Service Worker\CacheStorage\f4af26019cb9e51bfdd35e9a4d51b430bc744121\index.txt
+C:\Users\Aback\AppData\Roaming\Digiarty\VideoProc Converter\hardware.txt
+C:\Users\Aback\AppData\Roaming\Digiarty\VideoProc Converter\log.txt
+C:\Users\Aback\AppData\Roaming\Digiarty\VideoProc Converter\recoder\logs\2022-01-25 04-03-13.txt
+C:\Users\Aback\AppData\Roaming\Microsoft\Templates\LiveContent\16\Managed\Word Document Building Blocks\1033\TM02835233[[fn=Text Sidebar (Annual Report Red and Black design)]].docx
+C:\Users\Aback\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+C:\Users\Aback\Desktop\IZVEŠTAJ_OBRADA_SLIKE_ANDRIJA_PETROVIĆ.docx
+C:\Users\Aback\Desktop\NordVPN 10k Premium Accounts.txt
+C:\Users\Aback\Desktop\Willhaben.txt
+C:\Users\Aback\Desktop\C# Projects\DocumentFinder.txt
+C:\Users\Aback\Desktop\C# Projects\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.csproj.FileListAbsolute.txt
+C:\Users\Aback\Desktop\C# Projects\DocumentFinder\bin\Debug\TransferedFilesPaths.txt
+C:\Users\Aback\Desktop\C# Projects\DocumentFinder\obj\Debug\DocumentFinder.csproj.FileListAbsolute.txt
+C:\Users\Aback\Desktop\C# Projects\DocumentFinder\packages\DocX.2.0.0\LICENSE.txt
+C:\Users\Aback\Desktop\C# Projects\DocumentFinder\packages\iTextSharp.5.5.13.2\notice.txt
+C:\Users\Aback\Desktop\C# Projects\WPF 01\obj\Debug\net6.0-windows\WPF 01.csproj.FileListAbsolute.txt
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.csproj.FileListAbsolute.txt
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\packages\DocX.2.0.0\LICENSE.txt
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\packages\iTextSharp.5.5.13.2\notice.txt
+C:\Users\Aback\Downloads\4_5875409437228796496.pdf
+C:\Users\Aback\Downloads\Alberto Fernandez Villan - Mastering OpenCV 4 with Python.pdf
+C:\Users\Aback\Downloads\Altcoin Izveštaj - 23.04.2021..pdf
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\LICENSE.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\ThirdPartyNotices.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\node_modules\mkdirp\bin\usage.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\node_modules\vscode-chrome-debug-core\LICENSE.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\node_modules\vscode-chrome-debug-core\ThirdPartyNotices.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\node_modules\vscode-debugadapter\LICENSE.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\node_modules\vscode-debugadapter\thirdpartynotices.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\node_modules\vscode-debugadapter\node_modules\vscode-debugprotocol\LICENSE.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\node_modules\vscode-debugprotocol\LICENSE.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\node_modules\vscode-nls\License.txt
+C:\Users\All Users\Microsoft\VisualStudio\ChromeAdapter\404abed4\node_modules\vscode-nls\ThirdPartyNotices.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\LICENSE.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\ThirdPartyNotices.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\mkdirp\bin\usage.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\vscode-chrome-debug-core\LICENSE.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\vscode-chrome-debug-core\ThirdPartyNotices.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\vscode-chrome-debug-core\node_modules\vscode-nls\License.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\vscode-chrome-debug-core\node_modules\vscode-nls\ThirdPartyNotices.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\vscode-debugadapter\LICENSE.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\vscode-debugadapter\thirdpartynotices.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\vscode-debugprotocol\LICENSE.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\vscode-nls\License.txt
+C:\Users\All Users\Microsoft\VisualStudio\EdgeAdapter\404abed4\node_modules\vscode-nls\ThirdPartyNotices.txt
+C:\Users\All Users\Microsoft\Windows Defender\Platform\4.18.2111.5-0\ThirdPartyNotices.txt
+C:\Users\All Users\Microsoft\Windows Defender\Platform\4.18.2201.10-0\ThirdPartyNotices.txt

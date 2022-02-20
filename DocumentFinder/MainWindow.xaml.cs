@@ -75,7 +75,7 @@ namespace DocumentFinder
                     for (int i = 0; i < files.Count(); i++)
                     {
                         // Update UI thread TextBox with paths. Just for easy testing
-                        Dispatcher.Invoke((Action)delegate ()
+                        this.Dispatcher.Invoke((Action)delegate ()
                         {
                             tb1.Text = tb1.Text + files[i].DirectoryName.ToString() + "\\" + files[i].ToString() + "\n";
                         });
@@ -124,7 +124,7 @@ namespace DocumentFinder
                     while (trSearch.IsAlive)
                     {
                     }
-                    Dispatcher.Invoke((Action)delegate ()
+                    this.Dispatcher.Invoke((Action)delegate ()
                     {
                         toogleElemets(true);
                     });                    
@@ -310,6 +310,7 @@ namespace DocumentFinder
         private void Button_Click1(object sender, RoutedEventArgs e)
         {
             toogleElemets(false);
+            bool ocrCheckValid = ocrOption.IsChecked == true ? true : false;
 
             Thread conversion = new Thread(() =>
             {
@@ -350,7 +351,7 @@ namespace DocumentFinder
                 {
                     Trace.WriteLine("pdfConversionFilePaths: " + pdfConversionFilePaths[i].ToString());
 
-                    string pdfText = ocrOption.IsChecked == true ? ExtractTextFromPdfWithOCR(pdfConversionFilePaths[i]) : ExtractTextFromPdf(pdfConversionFilePaths[i]);
+                    string pdfText = ocrCheckValid == true ? ExtractTextFromPdfWithOCR(pdfConversionFilePaths[i]) : ExtractTextFromPdf(pdfConversionFilePaths[i]);
                     string pdfToTextFile = pdfConversionFilePaths[i] + ".txt";
                     if (pdfText != "")
                     {
@@ -367,7 +368,7 @@ namespace DocumentFinder
                 while (conversion.IsAlive)
                 {
                 }
-                Dispatcher.Invoke((Action)delegate ()
+                this.Dispatcher.Invoke((Action)delegate ()
                 {
                     toogleElemets(true);
                 });
@@ -432,7 +433,7 @@ namespace DocumentFinder
                                     int foundLines;
                                     bool caseSensitive = false;
 
-                                    Dispatcher.Invoke((Action)delegate ()
+                                    this.Dispatcher.Invoke((Action)delegate ()
                                     {
                                         if (cbxCS.IsChecked == true)
                                             caseSensitive = true;
@@ -478,13 +479,13 @@ namespace DocumentFinder
                         });
 
                         //display results
-                        Dispatcher.Invoke((Action)delegate ()
+                        this.Dispatcher.Invoke((Action)delegate ()
                         {
                             searchResultTB.Items.Clear();
                         });
                         foreach (var result in resultList)
                         {
-                            Dispatcher.Invoke((Action)delegate ()
+                            this.Dispatcher.Invoke((Action)delegate ()
                             {
                                 ListViewItem item = new ListViewItem();
                                 item.Content = result.FilePath;
@@ -509,7 +510,7 @@ namespace DocumentFinder
                     while (keyWordSearch.IsAlive)
                     {
                     }
-                    Dispatcher.Invoke((Action)delegate ()
+                    this.Dispatcher.Invoke((Action)delegate ()
                     {
                         toogleElemets(true);
                     });
