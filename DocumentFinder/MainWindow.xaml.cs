@@ -44,6 +44,10 @@ namespace DocumentFinder
             btnFind.IsEnabled = isEnabled;
             btnConvert.IsEnabled = isEnabled;
             btnSearch.IsEnabled = isEnabled;
+            if (isEnabled)
+                Loading.Visibility = Visibility.Hidden;
+            else
+                Loading.Visibility = Visibility.Visible;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -254,7 +258,7 @@ namespace DocumentFinder
 
                                     }
                                 }
-                                catch (Exception ex)
+                                catch (Exception)
                                 {
                                     Trace.WriteLine("Execption for image on page:" + pageNumber + "Image Number:" + imageNumber);
                                 }
@@ -420,7 +424,7 @@ namespace DocumentFinder
                     while (getTxtFiles.IsAlive)
                     {
                     }
-                    if (SearchWords.Count() > 0)
+                    if (searchTerm != "")
                     {
                         foreach (var file in files)
                         {
@@ -501,7 +505,7 @@ namespace DocumentFinder
                     else
                     {
                         MessageBox.Show("Search term can't be empty");
-                    }                    
+                    }
                 });
                 keyWordSearch.Start();
 
@@ -519,6 +523,7 @@ namespace DocumentFinder
             else
             {
                 MessageBox.Show("No files were coppied yet! Please click on " + btnFind.Content);
+                toogleElemets(true);
             }
         }
 
