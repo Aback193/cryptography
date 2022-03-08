@@ -32,23 +32,22 @@ namespace DocumentFinder
         List<string> docConversionFilePaths = new List<string>();
         List<string> docxConversionFilePaths = new List<string>();
         List<string> pdfConversionFilePaths = new List<string>();
-        string path = Directory.GetCurrentDirectory();
+        public List<SearchResults> resultList = new List<SearchResults>();
+        string path = Directory.GetCurrentDirectory(); //da bude na C DocumentFinder, dodati opciju da moze da se menja
         string folderForFileCopy = "\\TransferedFiles";
 
         public MainWindow()
         {
             InitializeComponent();            
         }
+
         public void toogleElemets(bool isEnabled)
         {
             btnFind.IsEnabled = isEnabled;
             btnConvert.IsEnabled = isEnabled;
             btnSearch.IsEnabled = isEnabled;
-            if (isEnabled)
-                Loading.Visibility = Visibility.Hidden;
-            else
-                Loading.Visibility = Visibility.Visible;
         }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -221,7 +220,6 @@ namespace DocumentFinder
             }            
         }
 
-
         public string ExtractTextFromPdfWithOCR(string pdfFile)
         {
             StringBuilder text = new StringBuilder();
@@ -331,6 +329,7 @@ namespace DocumentFinder
                     {
                         using (StreamWriter w = File.AppendText(docToTextFile))
                         {
+                            w.WriteLine(docConversionFilePaths[j]); //ovde dodaje putanju iskopiranog fajla, a treba originalna putanja!!!
                             w.WriteLine(docText);
                         }
                     }
@@ -346,6 +345,7 @@ namespace DocumentFinder
                     {
                         using (StreamWriter w = File.AppendText(docToTextFile))
                         {
+                            w.WriteLine(docxConversionFilePaths[k]); //ovde dodaje putanju iskopiranog fajla, a treba originalna putanja!!!
                             w.WriteLine(docText);
                         }
                     }
@@ -361,6 +361,7 @@ namespace DocumentFinder
                     {
                         using (StreamWriter w = File.AppendText(pdfToTextFile))
                         {
+                            w.WriteLine(pdfConversionFilePaths[i]); //ovde dodaje putanju iskopiranog fajla, a treba originalna putanja!!!
                             w.WriteLine(pdfText);
                         }
                     }
@@ -379,19 +380,6 @@ namespace DocumentFinder
             }).Start();
         }
 
-        // Class for storing Search Results
-        public class SearchResults
-        {
-            public string FilePath { get; set; }
-
-            public List<string> WordsFound { get; set; }
-
-            public SearchResults()
-            {
-                WordsFound = new List<string>();
-            }
-        }
-
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
             toogleElemets(false);
@@ -405,10 +393,8 @@ namespace DocumentFinder
                 {
                     searchTerm = searchTb.Text.ToString();
                 }
-                List<string> SearchWords = searchTerm.Split(' ').ToList();
 
                 var files = new List<FileInfo>();
-                var resultList = new List<SearchResults>();
 
                 Thread getTxtFiles = new Thread(() =>
                 {
@@ -424,62 +410,37 @@ namespace DocumentFinder
                     while (getTxtFiles.IsAlive)
                     {
                     }
+
                     if (searchTerm != "")
                     {
-                        foreach (var file in files)
+
+                        bool caseSensitive = false;
+
+                        this.Dispatcher.Invoke((Action)delegate ()
                         {
-                            if (File.Exists(workDir + file.Name) && SearchWords.Count() > 0)
-                            {
-                                SearchWords.ForEach(x => 
-                                {
-                                    var lines = File.ReadAllLines(workDir + file.Name);
+                            if (cbxCS.IsChecked == true)
+                                caseSensitive = true;
 
-                                    int foundLines;
-                                    bool caseSensitive = false;
+                            Window1 win = new Window1();
 
-                                    this.Dispatcher.Invoke((Action)delegate ()
-                                    {
-                                        if (cbxCS.IsChecked == true)
-                                            caseSensitive = true;
-                                    });
+                            win.parent = this;
+                            win.files = files;
+                            win.caseSensitive = caseSensitive;
+                            win.workDir = workDir;
+                            win.searchTerm = searchTerm;
+                            win.task = "search";
 
-                                    if (!caseSensitive)
-                                    {
-                                        foundLines = lines.Where(y => y.ToLower().Contains(x.ToLower())).Count();
-                                    }
-                                    else
-                                    {
-                                        foundLines = lines.Where(y => y.Contains(x)).Count();
-                                    }
+                            win.ShowDialog();
+                            
+                        });
 
-                                    if(foundLines > 0)
-                                    {
-                                        if(resultList.Where(z => z.FilePath == file.Name).Count() > 0)
-                                        {
-                                            resultList.Where(z => z.FilePath == file.Name).ToList().First().WordsFound.Add(x);
-                                        }
-                                        else
-                                        {
-                                            SearchResults AddResult = new SearchResults();
-                                            AddResult.FilePath = file.Name;
-                                            AddResult.WordsFound.Add(x);
-                                            
-                                            resultList.Add(AddResult);
-                                        }
-                                    }
-                                });
-                                
-                            }
-                        }
-
-                        //sort results
-                        resultList.Sort(delegate(SearchResults x,SearchResults y)
+                        resultList.Sort(delegate (SearchResults x, SearchResults y)
                         {
                             if (x.WordsFound.Count() > y.WordsFound.Count()) return -1;
                             else if (x.WordsFound.Count() < y.WordsFound.Count()) return 1;
                             else if (String.Compare(x.FilePath, y.FilePath) < 0) return -1;
                             return 1;
-                            
+
                         });
 
                         //display results
@@ -495,9 +456,9 @@ namespace DocumentFinder
                                 item.Content = result.FilePath;
                                 item.DataContext = result.FilePath;
                                 item.MouseDoubleClick += ListItemMouseDoubleClick;
-                                item.Content = item.Content.ToString() + "    Words found: "; 
+                                item.Content = item.Content.ToString() + "    Words found: ";
                                 result.WordsFound.ForEach(x => item.Content = item.Content.ToString() + " " + x + ", ");
-								item.Content = item.Content.ToString().Remove(item.Content.ToString().Length - 2);
+                                item.Content = item.Content.ToString().Remove(item.Content.ToString().Length - 2);
                                 searchResultTB.Items.Add(item);
                             });
                         }
@@ -508,6 +469,7 @@ namespace DocumentFinder
                     }
                 });
                 keyWordSearch.Start();
+                
 
                 new Thread(() =>
                 {
@@ -519,6 +481,7 @@ namespace DocumentFinder
                         toogleElemets(true);
                     });
                 }).Start();
+ 
             }
             else
             {
@@ -530,6 +493,30 @@ namespace DocumentFinder
         private void Close_App(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Options_Click(object sender, RoutedEventArgs e)
+        {
+
+            ContextMenu cm = this.FindResource("cmScan") as ContextMenu;
+            cm.PlacementTarget = sender as Button;
+
+            if (cm.Visibility == Visibility.Visible)
+            {
+                cm.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                cm.IsOpen = true;
+                cm.Visibility = Visibility.Visible;
+            }
+
+        }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            //ovde dodati kod za otvaranje dokumentacije
+            return;
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -546,15 +533,14 @@ namespace DocumentFinder
 
         private void OpenOriginalFile(string filename)
         {
-            string filepath = path + folderForFileCopy + "\\" + System.IO.Path.GetFileNameWithoutExtension(filename);
+            string filepath = File.ReadLines(filename).First();
+
             if (File.Exists(filepath))
                 System.Diagnostics.Process.Start(filepath); //opens .docx .doc .pdf
-            else
-                System.Diagnostics.Process.Start(filename); //original file is .txt
-
+            
+            if(File.Exists(filename))
+                System.Diagnostics.Process.Start(filename); // opens .txt
         }
-
-
 
         private IList<System.Drawing.Image> GetImagesFromPdfDict(PdfDictionary dict, PdfReader doc)
         {
@@ -593,5 +579,6 @@ namespace DocumentFinder
 
             return images;
         }
+
     }
 }
