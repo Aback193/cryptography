@@ -15,10 +15,51 @@
                                 Background="{TemplateBinding Background}">
                 <ContentPresenter 
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Center"                        
                         ></ContentPresenter>
             </Border>
         </ControlTemplate>
+
+        <ControlTemplate x:Key="AutoButtonTemplate" TargetType="{x:Type Button}">
+            <Border CornerRadius="30"
+                                Height="50"
+                                Width="300"
+                                Background="{TemplateBinding Background}">
+                <ContentPresenter 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"                        
+                        ></ContentPresenter>
+            </Border>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="PickButtonTemplate" TargetType="{x:Type Button}">
+            <Border CornerRadius="15"
+                                Height="30"
+                                Width="80"
+                                Background="{TemplateBinding Background}">
+                <ContentPresenter 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"                        
+                        ></ContentPresenter>
+            </Border>
+        </ControlTemplate>
+
+        <Style x:Key="PickButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#022140"></Setter>
+            <Setter Property="Foreground" Value="#ffffff"></Setter>
+            <Setter Property="FontFamily" Value="Agency FB"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#265077"></Setter>
+                    <Setter Property="Foreground" Value="#ffffff"></Setter>
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
 
         <ControlTemplate x:Key="ButtonExitTemplate" TargetType="{x:Type Button}">
             <Border CornerRadius="20"
@@ -133,57 +174,68 @@
         </Style>
 
         <ContextMenu Style="{StaticResource ContextMenuStyle}" Visibility="Hidden" x:Key="cmScan">
-            <MenuItem Header="Scan for files" />
-            <MenuItem Header="Convert files" />
-            <MenuItem Header="Scan and convert files" />
+            <MenuItem Header="Scan for files" Click="menuScanClick" />
+            <MenuItem Header="Convert files" Click="menuConvertClick" />
+            <MenuItem Header="Scan and convert files" Click="menuAutoScanConvertClick"  />
         </ContextMenu>
 
     </Window.Resources>
 
-    <Grid>
+    <DockPanel>
+        
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Name="statusBar"  
+                       FontFamily="Agency FB"
+                       FontWeight="Bold"
+                       FontSize="15" />
+            </StatusBarItem>
+        </StatusBar>
+        
+        <Grid>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid Background="#022140" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Image Source="Image/search.png" Width="100"
+            <Grid Background="#022140" Grid.ColumnSpan="2">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="Image/search.png" Width="100"
                    Height="40" Margin="20,0,0,0"
                    Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-            <TextBlock Text="DocFinder"
+                <TextBlock Text="DocFinder"
                        Foreground="#ffffff"
                        Grid.Column="0"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Right"
                        FontFamily="Agency FB"
                        FontWeight="Bold"
-                       FontSize="40"
+                       FontSize="40"                       
                        >
-            </TextBlock>
+                </TextBlock>
 
-            <Button Grid.Column="1" x:Name="OptionsBtn" BorderThickness="0" Content="OPTIONS" Style="{StaticResource ButtonStyle}" Click="Options_Click">
-            </Button>
+                <Button Grid.Column="1" Margin="10,0,10,0" x:Name="OptionsBtn" BorderThickness="0" Content="OPTIONS" Style="{StaticResource ButtonStyle}" Click="Options_Click">
+                </Button>
 
-            <Button Grid.Column="2" x:Name="HelpBtn" BorderThickness="0" Content="HELP" Style="{StaticResource ButtonStyle}" Click="Help_Click">
-            </Button>
+                <Button Grid.Column="2" Margin="10,0,10,0" x:Name="HelpBtn" BorderThickness="0" Content="HELP" Style="{StaticResource ButtonStyle}" Click="Help_Click">
+                </Button>
 
-            <Button Style="{StaticResource ButtonStyle}" 
+                <Button Style="{StaticResource ButtonStyle}" 
                     Template="{StaticResource ButtonExitTemplate}"
                     Content="EXIT" BorderThickness="0"
                     Click="Close_App"
@@ -193,96 +245,135 @@
                     Grid.Column="4" 
                     HorizontalAlignment="Right"
                     Margin="0,0,10,0">
-            </Button>
-        </Grid>
-
-        <Grid Grid.Column="0" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <Button Template="{StaticResource ButtonTemplate}" Content="SCAN"
-                    Style="{StaticResource ButtonStyle}"
-                    Name="btnFind"
-                    Click="Button_Click"
-                    Grid.Column="0"
-                    VerticalAlignment="Center">
-                </Button>
-
-                <Button Template="{StaticResource ButtonTemplate}" Content="CONVERT"
-                    Name="btnConvert"
-                    Style="{StaticResource ButtonStyle}"
-                    Click="Button_Click1"
-                    Grid.Column="1">
                 </Button>
             </Grid>
 
-            <CheckBox Grid.Row="1"
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Template="{StaticResource AutoButtonTemplate}" Content="SCAN AND CONVERT"
+                    Style="{StaticResource ButtonStyle}"
+                    Visibility="Collapsed"
+                    Name="btnFindAuto"
+                    Click="btnFindAutoClick"
+                    Grid.Column="0"                        
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalAlignment="Center">
+                    </Button>
+
+                    <Button Template="{StaticResource ButtonTemplate}" Content="SCAN"
+                    Style="{StaticResource ButtonStyle}"
+                    Name="btnFind"
+                    Click="btnFindClick"
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalAlignment="Center">
+                    </Button>
+
+                   <Button Template="{StaticResource ButtonTemplate}" Content="CONVERT"
+                    Name="btnConvert"
+                    Style="{StaticResource ButtonStyle}"
+                    Click="btnConvertClick"
+                    Grid.Column="1">
+                    </Button>
+                </Grid>
+
+                <CheckBox Grid.Row="1"
                       Content="Use OCR" 
                       Style="{StaticResource CheckboxStyle}"
                       Name="ocrOption"/>
 
-            <CheckBox Grid.Row="2" Content="Copy original files" 
+                <CheckBox Grid.Row="2" Content="Copy original files" 
                      Style="{StaticResource CheckboxStyle}" Name="cbxCopy">
-            </CheckBox>
+                </CheckBox>
 
-            <TextBox Grid.Row="3"
+                <CheckBox Grid.Row="3" Content="Automatic Scan and Convert" 
+                     Style="{StaticResource CheckboxStyle}" Name="autoScanConvert"
+                     Click="autoScanConvertClick" Margin="0,7,0,0" VerticalAlignment="Top">
+                </CheckBox>
+
+                <Label Grid.Row="4"
+                     FontSize="20"
+                     FontFamily="Agency FB"
+                     Foreground="#18173f"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Stretch"
+                     Name="conversionDestination">
+                    </Label>
+
+                <Button Template="{StaticResource PickButtonTemplate}" Content="PICK"
+                    Grid.Row="5"
+                    Name="btnPick"
+                    Style="{StaticResource PickButtonStyle}"
+                    Click="btnPickClick"
+                    HorizontalAlignment="Center"                    >
+                </Button>
+
+                <TextBox Grid.Row="6"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Stretch"
-                     Margin="50"
+                     Margin="50,32,50,50"
                      Name="tb1"
                      Style="{StaticResource TextBoxStyle}"
                      VerticalScrollBarVisibility="Auto"
                      HorizontalScrollBarVisibility="Auto">
-            </TextBox>
+                </TextBox>
 
 
-        </Grid>
+            </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <TextBox Height="50" 
+                <TextBox Height="50" 
                      TextAlignment="Center"
                      Name="searchTb"
-                     Width="280"
+                     HorizontalAlignment="Stretch"
                      VerticalContentAlignment="Center"
+                     Margin="50,20,50,0"
                      FontSize="30"
+                     Grid.Row="0"
                      Style="{StaticResource TextBoxStyle}">
+                </TextBox>
 
-            </TextBox>
-
-            <CheckBox Grid.Row="1"
+                <CheckBox Grid.Row="1"
                       Content="Case sensitive" 
                       VerticalAlignment="Center"
                       Style="{StaticResource CheckboxStyle}"
                       Name="cbxCS"/>
 
-            <Button Style="{StaticResource ButtonStyle}"
+                <Button Style="{StaticResource ButtonStyle}"
                     Template="{StaticResource ButtonTemplate}"
                     Content="SEARCH"
                     Name="btnSearch"
-                    Click="Button_Click2"
+                    Click="btnSearchClick"
                     Grid.Row="2" Grid.ColumnSpan="2">
-                
-            </Button>
 
-            <ListView Style="{StaticResource ListViewStyle}"
-                     Name="searchResultTB" 
+                </Button>
+
+                <ListView Style="{StaticResource ListViewStyle}"
+                     Name="searchResultTB"
                      Grid.Row="3"
                      Grid.Column="0"
                      HorizontalAlignment="Stretch"
@@ -290,10 +381,10 @@
                      BorderBrush="#0f0f35"
                      Margin="50"
                      >
-            </ListView>
+                </ListView>
+
+            </Grid>
 
         </Grid>
-
-            
-    </Grid>
+    </DockPanel>
 </Window>

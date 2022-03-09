@@ -42,7 +42,6 @@ namespace DocumentFinder
             InitializeComponent();
         }
 
-
         private void Stop_Progress(object sender, RoutedEventArgs e)
         {
             this.Dispatcher.Invoke((Action)delegate ()

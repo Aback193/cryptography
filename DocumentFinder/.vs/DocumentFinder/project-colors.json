@@ -5,6 +5,11 @@
       "ProjectGuid": "5a7f084b-09fd-4941-b738-6e8437d2aade",
       "DisplayName": "DocumentFinder",
       "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
     }
   },
   "NextColorIndex": 1
