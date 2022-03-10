@@ -14,18 +14,17 @@ namespace DocumentFinder
 {
     public partial class MainWindow : System.Windows.Window
     {
+        public static MainWindow main;
         HelperMethods helperMethods = new HelperMethods();
         List<string> docConversionFilePaths = new List<string>();
         List<string> docxConversionFilePaths = new List<string>();
         List<string> pdfConversionFilePaths = new List<string>();
         List<string> allConversionFilePaths = new List<string>();
-        public static List<string> extensions = new List<string> { ".txt", ".pgn", ".pdf", ".docx", ".doc" };
-        public static List<string> excludeDirs = new List<string>() { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData", "C:\\$Recycle.Bin" };
         public List<SearchResults> resultList = new List<SearchResults>();
         public bool isMultiThreading = false;
         public bool wasScanned = false;
-        //public Window1 progressWindow = new Window1();
-        //public bool progressWindowIsRunning = false;
+        public static List<string> extensions = new List<string> { ".txt", ".pgn", ".pdf", ".docx", ".doc" };
+        public static List<string> excludeDirs = new List<string>() { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData", "C:\\$Recycle.Bin" };
         string path = "C:";
         string folderForFileCopy = "\\TransferedFiles";
 
@@ -34,6 +33,7 @@ namespace DocumentFinder
             InitializeComponent();
             setBottomStatusBar();
             conversionDestination.Content = "Conversion destination: " + path + folderForFileCopy;
+            main = this;
         }
 
         public void toogleElemets(bool isEnabled)
@@ -49,6 +49,7 @@ namespace DocumentFinder
             cbxCS.IsEnabled = isEnabled;
         }
 
+        // Display all Drives on BottomStatusBar
         public void setBottomStatusBar()
         {
             DriveInfo[] foundDrivesInfo = DriveInfo.GetDrives();
@@ -84,13 +85,10 @@ namespace DocumentFinder
             {
                 tb1.Clear();
                 wasScanned = true;
+                setBottomStatusBar();
+                toogleElemets(false);
                 bool copyFilesCheckValid = cbxCopy.IsChecked == true ? true : false;
                 BuildFileList b = new BuildFileList(excludeDirs, extensions);
-
-                // Display all Drives on BottomStatusBar
-                setBottomStatusBar();
-
-                toogleElemets(false);
 
                 // Get current directory & make new directory for file transfer if non existent
                 string targetD = path + folderForFileCopy;
@@ -551,14 +549,30 @@ namespace DocumentFinder
                     progressBar.Value++;
                 }                
             });
-            progressStatus.Dispatcher.Invoke((Action)delegate ()
+
+            string modeFinal = "Converting: ";
+            string fileType = " files";
+            string finalName = filePath;
+            if (mode == "scan")
             {
-                string modeFinal = "Converting: ";
-                if (mode == "scan")
-                    modeFinal = "Scanning: ";
-                progressStatus.Text = modeFinal + counter.ToString() + ". " + helperMethods.fileNameExtraction(filePath) + helperMethods.extensionExtraction(filePath);
-                if (counter == pMax)
-                    progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + " files";
+                modeFinal = "Scanning: ";
+                fileType = " files found";
+            }
+            else if (mode == "scanDrives" || mode == "scanDrivesFinish")
+            {
+                modeFinal = "Scanning: ";
+            }
+            else if (mode == "convert")
+            {
+                finalName = helperMethods.fileNameExtraction(filePath) + helperMethods.extensionExtraction(filePath);
+            }
+            progressStatus.Dispatcher.Invoke((Action)delegate ()
+            {                
+                progressStatus.Text = modeFinal + counter.ToString() + ". " + finalName;
+                if (counter == pMax && mode != "scanDrives" && mode != "scanDrivesFinish")
+                    progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + fileType;
+                if (counter == pMax && mode == "scanDrivesFinish")
+                    progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + " drives";
             });
         }
 

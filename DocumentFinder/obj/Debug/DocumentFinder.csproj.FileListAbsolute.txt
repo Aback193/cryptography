@@ -61,3 +61,4 @@ C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFi
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.csproj.CopyComplete
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.exe
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.pdb
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.csproj.AssemblyReference.cache
