@@ -70,7 +70,7 @@ namespace DocumentFinder
                     counter++;
                     MainWindow.main.Dispatcher.BeginInvoke(new Action(delegate ()
                     {
-                        MainWindow.main.updateProgress(directories.Length, counter, directoryInfo.Root.ToString(), "scanDrives", false);
+                        MainWindow.main.updateProgress(directories.Length, counter, directoryInfo.Parent.ToString(), "scanDrives", false);
                     }));
                     if (!excludeDirs.Any(s => directoryInfo.FullName.ToString().Contains(s)))
                     {

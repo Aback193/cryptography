@@ -24,7 +24,7 @@ namespace DocumentFinder
         public bool isMultiThreading = false;
         public bool wasScanned = false;
         public static List<string> extensions = new List<string> { ".txt", ".pgn", ".pdf", ".docx", ".doc" };
-        public static List<string> excludeDirs = new List<string>() { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData", "C:\\$Recycle.Bin" };
+        public static List<string> excludeDirs = new List<string>() { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData", "C:\\$Recycle.Bin" }; //, "C:\\Users\\Aback\\Desktop\\BIG PDF"
         string path = "C:";
         string folderForFileCopy = "\\TransferedFiles";
 
@@ -212,16 +212,16 @@ namespace DocumentFinder
                 if (isMultiThreading == true)
                 {
                     // Multi Threaded Conversion
-                    Task[] tasks = new Task[allConversionFilePaths.Count()];
+                    Thread[] threads = new Thread[allConversionFilePaths.Count()];
                     Enumerable.Range(0, allConversionFilePaths.Count()).ToList().ForEach(j =>
                     {
                         try
                         {
-                            tasks[j] = Task.Run(() =>
+                            threads[j] = new Thread(() =>
                             {
                                 Trace.WriteLine("THREAD NO: " + j.ToString());
                                 if (File.Exists(allConversionFilePaths[j]))
-                                {
+                                {           
                                     Trace.WriteLine("docConversionFilePaths: " + allConversionFilePaths[j].ToString());
                                     string targetFilePath = targetD + "\\" + helperMethods.fileNameExtraction(allConversionFilePaths[j].ToString()) + ".txt";
                                     Trace.WriteLine("docConversionFilePaths_DESTINATION: " + targetFilePath);
@@ -246,10 +246,9 @@ namespace DocumentFinder
                                         }
                                     }
                                 }
-                                //if(tasks[j].Status.ToString() == "RanToCompletion")
-                                    updateProgress(allConversionFilePaths.Count, j + 1, allConversionFilePaths[j], "convert", false);
-                                return j;
+                                updateProgress(allConversionFilePaths.Count, j + 1, allConversionFilePaths[j], "convertP", false);
                             });
+                            threads[j].Start();
                         }
                         catch (Exception ex)
                         {
@@ -258,49 +257,25 @@ namespace DocumentFinder
                     });
 
                     // Check in background if all task had finished, update UI
-                    Task.Run(() =>
+                    new Thread(() =>
                     {
-                        try
+                        Thread.Sleep(1000);
+                        bool areThreadsRunning = true;
+                        while (areThreadsRunning == true)
                         {
-                            int taskFinishedCounter = 0;
-                            while (taskFinishedCounter < allConversionFilePaths.Count())
+                            areThreadsRunning = false;
+                            foreach (Thread th in threads)
                             {
-                                taskFinishedCounter = 0;
-                                for (int i = 0; i < allConversionFilePaths.Count(); i++)
-                                {
-                                    if (tasks[i] != null)
-                                    {
-                                        string taskState = tasks[i].Status.ToString();
-                                        if (tasks[i].Exception != null)
-                                        {
-                                            string taskStateA = tasks[i].Exception.ToString();
-                                            Trace.WriteLine("TASK STATE EXCEPTION CHECK: " + i.ToString() + " " + taskStateA);
-                                        }
-                                        if (taskState == "RanToCompletion")
-                                        {
-                                            taskFinishedCounter++;
-                                        }
-                                        Trace.WriteLine("TASK STATE: " + i.ToString() + " " + taskState);
-                                    }
-                                    else
-                                    {
-                                        Trace.WriteLine("TASK STATE: " + i.ToString() + " " + "Null");
-                                    }
-                                }
-                                Trace.WriteLine("TASK STATE taskFinishedCounter: " + taskFinishedCounter);
+                                if(th.IsAlive)
+                                    areThreadsRunning = true;
                             }
-                            Trace.WriteLine("TASK STATE EXITED WHILE LOOP: " + taskFinishedCounter);
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                toogleElemets(true);
-                                updateProgress(allConversionFilePaths.Count, allConversionFilePaths.Count, allConversionFilePaths[allConversionFilePaths.Count - 1], "convert", true);
-                            });
                         }
-                        catch (Exception ex)
+                        this.Dispatcher.Invoke(() =>
                         {
-                            Trace.WriteLine(ex);
-                        }
-                    });
+                            toogleElemets(true);
+                            updateProgress(allConversionFilePaths.Count, allConversionFilePaths.Count, allConversionFilePaths[allConversionFilePaths.Count - 1], "convertFinish", true);
+                        });
+                    }).Start();
                 }
                 else
                 {
@@ -314,7 +289,6 @@ namespace DocumentFinder
                                 Trace.WriteLine("THREAD NO: " + j.ToString());
                                 if (File.Exists(allConversionFilePaths[j]))
                                 {
-
                                     updateProgress(allConversionFilePaths.Count, j+1, allConversionFilePaths[j], "convert", false);
 
                                     Trace.WriteLine("docConversionFilePaths: " + allConversionFilePaths[j].ToString());
@@ -562,17 +536,21 @@ namespace DocumentFinder
             {
                 modeFinal = "Scanning: ";
             }
-            else if (mode == "convert")
+            else if (mode == "convert" || mode == "convertFinish" || mode == "convertP")
             {
                 finalName = helperMethods.fileNameExtraction(filePath) + helperMethods.extensionExtraction(filePath);
+                if(mode == "convertP")
+                    modeFinal = "Converted: ";
             }
             progressStatus.Dispatcher.Invoke((Action)delegate ()
             {                
                 progressStatus.Text = modeFinal + counter.ToString() + ". " + finalName;
-                if (counter == pMax && mode != "scanDrives" && mode != "scanDrivesFinish")
+                if (counter == pMax && mode != "scanDrives" && mode != "scanDrivesFinish" && mode != "convertP" && mode != "convertFinish")
                     progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + fileType;
                 if (counter == pMax && mode == "scanDrivesFinish")
                     progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + " drives";
+                if (counter == pMax && mode == "convertFinish")
+                    progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + fileType;
             });
         }
 

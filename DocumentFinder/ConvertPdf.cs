@@ -67,9 +67,9 @@ namespace DocumentFinder
                                         text.Append(textFromImage);
                                     }
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
-                                    Trace.WriteLine("Execption for image on page:" + pageNumber + "Image Number:" + imageNumber);
+                                    Trace.WriteLine("Execption for image on page:" + pageNumber + "Image Number:" + imageNumber + " " + ex);
                                 }
                                 imageNumber++;
                             }
