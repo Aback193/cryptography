@@ -24,7 +24,7 @@ namespace DocumentFinder
         public bool isMultiThreading = false;
         public bool wasScanned = false;
         public static List<string> extensions = new List<string> { ".txt", ".pgn", ".pdf", ".docx", ".doc" };
-        public static List<string> excludeDirs = new List<string>() { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData", "C:\\$Recycle.Bin" }; //, "C:\\Users\\Aback\\Desktop\\BIG PDF"
+        public static List<string> excludeDirs = new List<string>() { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData", "C:\\$Recycle.Bin" };
         string path = "C:";
         string folderForFileCopy = "\\TransferedFiles";
 
@@ -190,8 +190,8 @@ namespace DocumentFinder
                     {
                         string lineFinal = line.Trim();                        
                         string lineFileExtension = helperMethods.extensionExtraction(line.Trim());
-                        Trace.WriteLine("LINES PRINT: " + lineFinal);
-                        Trace.WriteLine("LINES PRINT EXTENSION: " + lineFileExtension);
+                        //Trace.WriteLine("LINES PRINT: " + lineFinal);
+                        //Trace.WriteLine("LINES PRINT EXTENSION: " + lineFileExtension);
                         if (lineFileExtension != ".txt")
                             allConversionFilePaths.Add(lineFinal);
                         if (lineFileExtension == ".pdf")
@@ -222,9 +222,9 @@ namespace DocumentFinder
                                 Trace.WriteLine("THREAD NO: " + j.ToString());
                                 if (File.Exists(allConversionFilePaths[j]))
                                 {           
-                                    Trace.WriteLine("docConversionFilePaths: " + allConversionFilePaths[j].ToString());
+                                    //Trace.WriteLine("docConversionFilePaths: " + allConversionFilePaths[j].ToString());
                                     string targetFilePath = targetD + "\\" + helperMethods.fileNameExtraction(allConversionFilePaths[j].ToString()) + ".txt";
-                                    Trace.WriteLine("docConversionFilePaths_DESTINATION: " + targetFilePath);
+                                    //Trace.WriteLine("docConversionFilePaths_DESTINATION: " + targetFilePath);
 
                                     string fileText = "";
                                     string lineFileExtension = helperMethods.extensionExtraction(allConversionFilePaths[j].Trim());
@@ -291,9 +291,9 @@ namespace DocumentFinder
                                 {
                                     updateProgress(allConversionFilePaths.Count, j+1, allConversionFilePaths[j], "convert", false);
 
-                                    Trace.WriteLine("docConversionFilePaths: " + allConversionFilePaths[j].ToString());
+                                    //Trace.WriteLine("docConversionFilePaths: " + allConversionFilePaths[j].ToString());
                                     string targetFilePath = targetD + "\\" + helperMethods.fileNameExtraction(allConversionFilePaths[j].ToString()) + ".txt";
-                                    Trace.WriteLine("docConversionFilePaths_DESTINATION: " + targetFilePath);
+                                    //Trace.WriteLine("docConversionFilePaths_DESTINATION: " + targetFilePath);
 
                                     string fileText = "";
                                     string lineFileExtension = helperMethods.extensionExtraction(allConversionFilePaths[j].Trim());
