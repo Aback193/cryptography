@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace DocumentFinder
@@ -10,7 +11,7 @@ namespace DocumentFinder
     internal class BuildFileList
     {
         public List<string> excludeDirs;
-        public List<string> extensions;
+        public List<string> extensions;        
         //public Window1 progressWindow = new Window1();
         //public bool progressWindowIsRunning = false;
 
@@ -36,7 +37,7 @@ namespace DocumentFinder
                     try
                     {
                         if (!excludeDirs.Any(s => directoryInfo.FullName.ToString().Contains(s)))
-                        {
+                        {                                              
                             Trace.WriteLine("directoryInfo.FullName: " + directoryInfo.FullName.ToString());
                             GetFilesFromDirectory(directoryInfo.FullName, files);
                         }
@@ -55,13 +56,13 @@ namespace DocumentFinder
             var di = new DirectoryInfo(directory);
             var fs = di.GetFiles("*.*", SearchOption.TopDirectoryOnly).Where(f => extensions.Contains(f.Extension.ToLower())).ToArray();
             files.AddRange(fs);
-            var directories = di.GetDirectories();
+            var directories = di.GetDirectories();            
             foreach (var directoryInfo in directories)
             {
                 try
                 {
                     if (!excludeDirs.Any(s => directoryInfo.FullName.ToString().Contains(s)))
-                    {
+                    {                                              
                         Trace.WriteLine("directoryInfo.FullName: " + directoryInfo.FullName.ToString());
                         GetFilesFromDirectory(directoryInfo.FullName, files);
                     }

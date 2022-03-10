@@ -22,10 +22,11 @@ namespace DocumentFinder
         public static List<string> extensions = new List<string> { ".txt", ".pgn", ".pdf", ".docx", ".doc" };
         public static List<string> excludeDirs = new List<string>() { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData", "C:\\$Recycle.Bin" };
         public List<SearchResults> resultList = new List<SearchResults>();
+        public bool isMultiThreading = false;
         public bool wasScanned = false;
         //public Window1 progressWindow = new Window1();
         //public bool progressWindowIsRunning = false;
-        string path = "C:"; //da bude na C DocumentFinder, dodati opciju da moze da se menja
+        string path = "C:";
         string folderForFileCopy = "\\TransferedFiles";
 
         public MainWindow()
@@ -69,7 +70,7 @@ namespace DocumentFinder
         }
         private void btnConvertClick(object sender, RoutedEventArgs e)
         {
-            convert();
+            convert();            
         }
         private void btnSearchClick(object sender, RoutedEventArgs e)
         {
@@ -104,32 +105,32 @@ namespace DocumentFinder
 
                 Thread trSearch = new Thread(() =>
                 {
-                    var files = b.GetFiles();
-                    for (int i = 0; i < files.Count(); i++)
+                    var files = b.GetFiles();                   
+
+                    for (int i = 0; i < files.Count; i++)
                     {
-                        // Update UI thread TextBox with paths. Just for easy testing
-                        this.Dispatcher.Invoke((Action)delegate ()
+                        string sourceFile = Path.Combine(files[i].DirectoryName.ToString(), files[i].ToString());
+                        string destFile = Path.Combine(targetD, files[i].ToString());
+
+                        // Update UI thread TextBox with paths.
+                        tb1.Dispatcher.Invoke((Action)delegate ()
                         {
                             tb1.Text = tb1.Text + files[i].DirectoryName.ToString() + "\\" + files[i].ToString() + "\n";
                         });
-                    }
 
-                    for (int i = 0; i < files.Count(); i++)
-                    {
-                        string sourceFile = System.IO.Path.Combine(files[i].DirectoryName.ToString(), files[i].ToString());
-                        string destFile = System.IO.Path.Combine(targetD, files[i].ToString());
+                        updateProgress(files.Count, i + 1, files[i].DirectoryName.ToString() + "\\" + files[i].ToString(), "scan", false);
 
                         // Copy original files to destination if checkbox is checked
                         try
                         {
-                            if (copyFilesCheckValid == true)
-                            {
+                            if (copyFilesCheckValid == true && File.Exists(sourceFile))
+                            {                               
                                 File.Copy(sourceFile, destFile, true);
                             } 
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            Trace.WriteLine("Exception, file copy");
+                            Trace.WriteLine("Exception, file copy: " + ex);
                         }
 
                         // Save all file paths to txt
@@ -137,7 +138,7 @@ namespace DocumentFinder
                         using (StreamWriter w = File.AppendText(transferedFilesPathSave))
                         {
                             w.WriteLine(sourceFile);                            
-                            Trace.WriteLine("SOURCE FILE: " + sourceFile);
+                            Trace.WriteLine("SOURCE FILE: " + i.ToString() + ". " + sourceFile);
                         }
 
                         // Save file paths for conversion
@@ -180,8 +181,12 @@ namespace DocumentFinder
             try
             {
                 // Get file paths from log file for conversion
-                if (wasScanned == false)
+                if (wasScanned == false && File.Exists(path + folderForFileCopy + "\\_TransferedFilesPaths.txt"))
                 {
+                    allConversionFilePaths.Clear();
+                    pdfConversionFilePaths.Clear();
+                    docConversionFilePaths.Clear();
+                    docxConversionFilePaths.Clear();
                     string[] pathLogLines = File.ReadAllLines(path + folderForFileCopy + "\\_TransferedFilesPaths.txt");
                     foreach(string line in pathLogLines)
                     {
@@ -198,118 +203,167 @@ namespace DocumentFinder
                         else if (lineFileExtension == ".docx")
                             docxConversionFilePaths.Add(lineFinal);
                     }
-                }
+                } else if (wasScanned == false && !File.Exists(path + folderForFileCopy + "\\_TransferedFilesPaths.txt"))
+                    MessageBox.Show("Log file containing scanned files doesn't exist! Please scan for files first.");
                 ConvertWord convertWord = new ConvertWord();
                 ConvertPdf convertPdf = new ConvertPdf();                
                 string targetD = path + folderForFileCopy;
                 toogleElemets(false);
                 bool ocrCheckValid = ocrOption.IsChecked == true ? true : false;
-
-                                
-                Enumerable.Range(0, allConversionFilePaths.Count()-1).ToList().ForEach(j =>
+                
+                if (isMultiThreading == true)
                 {
-                    ThreadPool.QueueUserWorkItem((o) =>
+                    // Multi Threaded Conversion
+                    Task[] tasks = new Task[allConversionFilePaths.Count()];
+                    Enumerable.Range(0, allConversionFilePaths.Count()).ToList().ForEach(j =>
                     {
-                        Trace.WriteLine("THREAD NO: " + j.ToString());
-                        if (File.Exists(allConversionFilePaths[j]))
+                        try
                         {
-                            Trace.WriteLine("docConversionFilePaths: " + allConversionFilePaths[j].ToString());
-                            string targetFilePath = targetD + "\\" + helperMethods.fileNameExtraction(allConversionFilePaths[j].ToString()) + ".txt";
-                            Trace.WriteLine("docConversionFilePaths_DESTINATION: " + targetFilePath);
-
-                            string fileText = "";
-                            string lineFileExtension = helperMethods.extensionExtraction(allConversionFilePaths[j].Trim());
-
-                            if (lineFileExtension == ".pdf")
-                                fileText = ocrCheckValid == true ? convertPdf.ExtractTextFromPdfWithOCR(allConversionFilePaths[j]) : convertPdf.ExtractTextFromPdf(allConversionFilePaths[j]);
-                            else if (lineFileExtension == ".doc")
-                                fileText = convertWord.ExtractTextFromDoc(allConversionFilePaths[j].ToString());
-                            else if (lineFileExtension == ".docx")
-                                fileText = convertWord.ExtractTextFromDocX(allConversionFilePaths[j].ToString());
-
-                            if (fileText != "")
+                            tasks[j] = Task.Run(() =>
                             {
-                                using (StreamWriter w = File.AppendText(targetFilePath))
+                                Trace.WriteLine("THREAD NO: " + j.ToString());
+                                if (File.Exists(allConversionFilePaths[j]))
                                 {
-                                    w.WriteLine(fileText);
+                                    Trace.WriteLine("docConversionFilePaths: " + allConversionFilePaths[j].ToString());
+                                    string targetFilePath = targetD + "\\" + helperMethods.fileNameExtraction(allConversionFilePaths[j].ToString()) + ".txt";
+                                    Trace.WriteLine("docConversionFilePaths_DESTINATION: " + targetFilePath);
+
+                                    string fileText = "";
+                                    string lineFileExtension = helperMethods.extensionExtraction(allConversionFilePaths[j].Trim());
+
+                                    if (lineFileExtension == ".pdf")
+                                        fileText = ocrCheckValid == true ? convertPdf.ExtractTextFromPdfWithOCR(allConversionFilePaths[j]) : convertPdf.ExtractTextFromPdf(allConversionFilePaths[j]);
+                                    else if (lineFileExtension == ".doc")
+                                        fileText = convertWord.ExtractTextFromDoc(allConversionFilePaths[j].ToString());
+                                    else if (lineFileExtension == ".docx")
+                                        fileText = convertWord.ExtractTextFromDocX(allConversionFilePaths[j].ToString());
+
+                                    if (fileText != "")
+                                    {
+                                        if (File.Exists(targetFilePath))
+                                            File.Delete(targetFilePath);
+                                        using (StreamWriter w = File.AppendText(targetFilePath))
+                                        {
+                                            w.WriteLine(fileText);
+                                        }
+                                    }
                                 }
-                            }
+                                //if(tasks[j].Status.ToString() == "RanToCompletion")
+                                    updateProgress(allConversionFilePaths.Count, j + 1, allConversionFilePaths[j], "convert", false);
+                                return j;
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Trace.WriteLine("Task NO: " + j.ToString() + " multithread exception: " + ex);
                         }
                     });
-                });
 
-                toogleElemets(true);
-
-                /*Thread conversion = new Thread(() =>
-                {
-                    for (int j = 0; j < docConversionFilePaths.Count(); j++)
+                    // Check in background if all task had finished, update UI
+                    Task.Run(() =>
                     {
-                        if (File.Exists(docConversionFilePaths[j]))
-                        {                            
-                            Trace.WriteLine("docConversionFilePaths: " + docConversionFilePaths[j].ToString());
-                            string targetFilePathDOC = targetD + "\\" + helperMethods.fileNameExtraction(docConversionFilePaths[j].ToString()) + ".txt";
-                            Trace.WriteLine("docConversionFilePaths_DESTINATION: " + targetFilePathDOC);
-
-                            string docText = convertWord.ExtractTextFromDoc(docConversionFilePaths[j].ToString());
-                            if (docText != "")
-                            {
-                                using (StreamWriter w = File.AppendText(targetFilePathDOC))
-                                {
-                                    w.WriteLine(docText);
-                                }
-                            }
-                        }                        
-                    }
-
-                    for (int k = 0; k < docxConversionFilePaths.Count(); k++)
-                    {
-                        if (File.Exists(docxConversionFilePaths[k]))
+                        try
                         {
-                            Trace.WriteLine("docXConversionFilePaths: " + docxConversionFilePaths[k].ToString());
-                            string targetFilePathDOCX = targetD + "\\" + helperMethods.fileNameExtraction(docxConversionFilePaths[k].ToString()) + ".txt";
-                            Trace.WriteLine("docxConversionFilePaths_DESTINATION: " + targetFilePathDOCX);
-
-                            string docxText = convertWord.ExtractTextFromDocX(docxConversionFilePaths[k].ToString());
-                            if (docxText != "")
+                            int taskFinishedCounter = 0;
+                            while (taskFinishedCounter < allConversionFilePaths.Count())
                             {
-                                using (StreamWriter w = File.AppendText(targetFilePathDOCX))
+                                taskFinishedCounter = 0;
+                                for (int i = 0; i < allConversionFilePaths.Count(); i++)
                                 {
-                                    w.WriteLine(docxText);
+                                    if (tasks[i] != null)
+                                    {
+                                        string taskState = tasks[i].Status.ToString();
+                                        if (tasks[i].Exception != null)
+                                        {
+                                            string taskStateA = tasks[i].Exception.ToString();
+                                            Trace.WriteLine("TASK STATE EXCEPTION CHECK: " + i.ToString() + " " + taskStateA);
+                                        }
+                                        if (taskState == "RanToCompletion")
+                                        {
+                                            taskFinishedCounter++;
+                                        }
+                                        Trace.WriteLine("TASK STATE: " + i.ToString() + " " + taskState);
+                                    }
+                                    else
+                                    {
+                                        Trace.WriteLine("TASK STATE: " + i.ToString() + " " + "Null");
+                                    }
                                 }
+                                Trace.WriteLine("TASK STATE taskFinishedCounter: " + taskFinishedCounter);
                             }
-                        }                            
-                    }
-
-                    for (int i = 0; i < pdfConversionFilePaths.Count(); i++)
-                    {   
-                        if (File.Exists(pdfConversionFilePaths[i]))
+                            Trace.WriteLine("TASK STATE EXITED WHILE LOOP: " + taskFinishedCounter);
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                toogleElemets(true);
+                                updateProgress(allConversionFilePaths.Count, allConversionFilePaths.Count, allConversionFilePaths[allConversionFilePaths.Count - 1], "convert", true);
+                            });
+                        }
+                        catch (Exception ex)
                         {
-                            Trace.WriteLine("pdfConversionFilePaths: " + pdfConversionFilePaths[i].ToString());
-                            string targetFilePathPDF = targetD + "\\" + helperMethods.fileNameExtraction(pdfConversionFilePaths[i].ToString()) + ".txt";
-                            Trace.WriteLine("docxConversionFilePaths_DESTINATION: " + targetFilePathPDF);
-
-                            string pdfText = ocrCheckValid == true ? convertPdf.ExtractTextFromPdfWithOCR(pdfConversionFilePaths[i]) : convertPdf.ExtractTextFromPdf(pdfConversionFilePaths[i]);
-                            if (pdfText != "")
-                            {
-                                using (StreamWriter w = File.AppendText(targetFilePathPDF))
-                                {
-                                    w.WriteLine(pdfText);
-                                }
-                            }
-                        }                            
-                    }
-                });
-                conversion.Start();
-                new Thread(() =>
-                {
-                    while (conversion.IsAlive)
-                    {
-                    }
-                    this.Dispatcher.Invoke((Action)delegate ()
-                    {
-                        toogleElemets(true);
+                            Trace.WriteLine(ex);
+                        }
                     });
-                }).Start();*/
+                }
+                else
+                {
+                    // Single Threaded Conversion
+                    Thread t = new Thread(() =>
+                    {
+                        Enumerable.Range(0, allConversionFilePaths.Count()).ToList().ForEach(j =>
+                        {
+                            try
+                            {
+                                Trace.WriteLine("THREAD NO: " + j.ToString());
+                                if (File.Exists(allConversionFilePaths[j]))
+                                {
+
+                                    updateProgress(allConversionFilePaths.Count, j+1, allConversionFilePaths[j], "convert", false);
+
+                                    Trace.WriteLine("docConversionFilePaths: " + allConversionFilePaths[j].ToString());
+                                    string targetFilePath = targetD + "\\" + helperMethods.fileNameExtraction(allConversionFilePaths[j].ToString()) + ".txt";
+                                    Trace.WriteLine("docConversionFilePaths_DESTINATION: " + targetFilePath);
+
+                                    string fileText = "";
+                                    string lineFileExtension = helperMethods.extensionExtraction(allConversionFilePaths[j].Trim());
+
+                                    if (lineFileExtension == ".pdf")
+                                        fileText = ocrCheckValid == true ? convertPdf.ExtractTextFromPdfWithOCR(allConversionFilePaths[j]) : convertPdf.ExtractTextFromPdf(allConversionFilePaths[j]);
+                                    else if (lineFileExtension == ".doc")
+                                        fileText = convertWord.ExtractTextFromDoc(allConversionFilePaths[j].ToString());
+                                    else if (lineFileExtension == ".docx")
+                                        fileText = convertWord.ExtractTextFromDocX(allConversionFilePaths[j].ToString());
+
+                                    if (fileText != "")
+                                    {
+                                        if (File.Exists(targetFilePath))
+                                            File.Delete(targetFilePath);
+                                        using (StreamWriter w = File.AppendText(targetFilePath))
+                                        {
+                                            w.WriteLine(fileText);
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Trace.WriteLine("Task NO: " + j.ToString() + " singlethread exception: " + ex);
+                            }
+                        });
+                    });
+                    t.Start();
+                    new Thread(() =>
+                    {
+                    while (t.IsAlive)
+                    {
+                        //Trace.WriteLine("THREAD STATE: " + t.ThreadState);
+                        }
+                        this.Dispatcher.Invoke((Action)delegate ()
+                        {
+                            Trace.WriteLine("THREAD STATE: " + t.ThreadState);
+                            toogleElemets(true);
+                        });
+                    }).Start();
+                }
             }
             catch (Exception ex)
             {
@@ -485,6 +539,29 @@ namespace DocumentFinder
             }
         }
 
+        public void updateProgress(int pMax, int counter, string filePath, string mode, bool isKill)
+        {
+            progressBar.Dispatcher.Invoke((Action)delegate ()
+            {
+                if (progressBar.Value == progressBar.Maximum && !isKill)
+                    progressBar.Value = 0;
+                if(progressBar.Value < progressBar.Maximum && !isKill)
+                {
+                    progressBar.Maximum = pMax;
+                    progressBar.Value++;
+                }                
+            });
+            progressStatus.Dispatcher.Invoke((Action)delegate ()
+            {
+                string modeFinal = "Converting: ";
+                if (mode == "scan")
+                    modeFinal = "Scanning: ";
+                progressStatus.Text = modeFinal + counter.ToString() + ". " + helperMethods.fileNameExtraction(filePath) + helperMethods.extensionExtraction(filePath);
+                if (counter == pMax)
+                    progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + " files";
+            });
+        }
+
         private void menuScanClick(object sender, RoutedEventArgs e)
         {
             scan();
@@ -496,6 +573,10 @@ namespace DocumentFinder
         private void menuAutoScanConvertClick(object sender, RoutedEventArgs e)
         {
             scan();
+        }
+        private void menuMultiThreading(object sender, RoutedEventArgs e)
+        {
+            isMultiThreading = !isMultiThreading;
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
