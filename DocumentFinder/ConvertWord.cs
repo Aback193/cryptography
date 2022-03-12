@@ -3,6 +3,7 @@ using Microsoft.Office.Interop.Word;
 using System.Diagnostics;
 using Xceed.Words.NET;      // https://www.c-sharpcorner.com/article/generate-word-document-using-c-sharp/
 using Application = Microsoft.Office.Interop.Word.Application;
+using System.IO;
 
 namespace DocumentFinder
 {

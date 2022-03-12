@@ -243,6 +243,7 @@
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
 
                 <Image Source="Image/search.png" Width="100"
@@ -268,12 +269,26 @@
 
                 <Button Style="{StaticResource ButtonStyle}" 
                     Template="{StaticResource ButtonExitTemplate}"
+                    Content="STOP" BorderThickness="0"
+                    Name="btnStopWork"
+                    Click="stopClick"
+                    Visibility="Hidden"
+                    Width="70"
+                    Height="40"
+                    Background="#D82148"
+                    Grid.Column="4" 
+                    HorizontalAlignment="Right"
+                    Margin="0,0,10,0">
+                </Button>
+
+                <Button Style="{StaticResource ButtonStyle}" 
+                    Template="{StaticResource ButtonExitTemplate}"
                     Content="EXIT" BorderThickness="0"
                     Click="Close_App"
                     Width="70"
                     Height="40"
                     Background="#D82148"
-                    Grid.Column="4" 
+                    Grid.Column="5" 
                     HorizontalAlignment="Right"
                     Margin="0,0,10,0">
                 </Button>
@@ -300,7 +315,7 @@
                     Style="{StaticResource ButtonStyle}"
                     Visibility="Collapsed"
                     Name="btnFindAuto"
-                    Click="btnFindAutoClick"
+                    Click="btnAutoFindConvertClick"
                     Grid.Column="0"                        
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
