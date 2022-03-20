@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
-using System.Threading;
 using Tesseract;
 
 namespace DocumentFinder
@@ -20,12 +19,12 @@ namespace DocumentFinder
                 using (PdfReader reader = new PdfReader(pdfFile))
                 {
                     StringBuilder text = new StringBuilder();
-
-                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    for (int pageNumber = 1; pageNumber <= reader.NumberOfPages; pageNumber++)
                     {
                         if (MainWindow.main.stopWork == false)
                         {
-                            text.Append(PdfTextExtractor.GetTextFromPage(reader, i));
+                            Trace.WriteLine("| PDF: " + pdfFile + " | Current page: " + pageNumber.ToString());
+                            text.Append(PdfTextExtractor.GetTextFromPage(reader, pageNumber));
                         }
                     }
                     return text.ToString();
@@ -37,68 +36,56 @@ namespace DocumentFinder
                 return "";
             }
         }
+
         // PDF OCR
         public string ExtractTextFromPdfWithOCR(string pdfFile)
         {
             StringBuilder text = new StringBuilder();
-
-            using (var engine = new TesseractEngine(@"./testdata", "eng", EngineMode.Default))
+            using (TesseractEngine engine = new TesseractEngine(@"./testdata/", "eng", EngineMode.Default))
             {
-                engine.SetVariable("user_defined_dpi", "70"); //set dpi for supressing warning
                 using (PdfReader pdf = new PdfReader(pdfFile))
                 {
                     for (int pageNumber = 1; pageNumber <= pdf.NumberOfPages; pageNumber++)
                     {
-                        try
+                        if (MainWindow.main.stopWork == false)
                         {
-                            if (MainWindow.main.stopWork == false)
+                            Trace.WriteLine("| PDF: " + pdfFile + " | Current page: " + pageNumber.ToString());
+                            try
                             {
                                 text.Append(PdfTextExtractor.GetTextFromPage(pdf, pageNumber));
-
-                                PdfDictionary pg = pdf.GetPageN(pageNumber);
-                                IList<Image> listImages = GetImagesFromPdfDict(pg, pdf);
-
-                                if (listImages != null)
-                                {
-                                    var imageNumber = 1;
-                                    foreach (var obj in listImages)
-                                    {
-                                        try
-                                        {
-                                            var bmp = new Bitmap(obj);
-                                            var img = PixConverter.ToPix(bmp);
-                                            using (var image = engine.Process(img))
-                                            {
-                                                var textFromImage = image.GetText();
-                                                text.Append(textFromImage);
-                                                bmp.Dispose();
-                                                img.Dispose();
-                                            }
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Trace.WriteLine("Execption for image on page:" + pageNumber + "Image Number:" + imageNumber + " " + ex);
-                                        }
-                                        imageNumber++;
-                                    }
-                                }
                             }
-                        }
-                        catch (Exception)
-                        {
-                            Trace.WriteLine("PDF to Text Exception");
+                            catch (Exception ex)
+                            {
+                                Trace.WriteLine("PDF to Text Exception: " + ex);
+                            }
+                            try
+                            {
+                                PdfDictionary pg = pdf.GetPageN(pageNumber);
+                                IList<string> listImages = GetImagesFromPdfDict(pg, pdf, engine);
+                                if (listImages != null)
+                                    foreach (string s in listImages)
+                                        text.Append(s);
+                            }
+                            catch (Exception ex)
+                            {
+                                Trace.WriteLine("PDF Image OCR to text Exception: " + ex);
+                            }
                         }
                     }
                 }
             }
-            return text.ToString();
+            if (text != null)
+                return text.ToString();
+            else
+                return "";
         }
-        private IList<Image> GetImagesFromPdfDict(PdfDictionary dict, PdfReader doc)
+
+        // Get image text from PdfDict
+        private IList<string> GetImagesFromPdfDict(PdfDictionary dict, PdfReader doc, TesseractEngine engine)
         {
-            List<Image> images = new List<Image>();
+            List<string> imagesText = new List<string>();
             PdfDictionary res = (PdfDictionary)(PdfReader.GetPdfObject(dict.Get(PdfName.RESOURCES)));
             PdfDictionary xobj = (PdfDictionary)(PdfReader.GetPdfObject(res.Get(PdfName.XOBJECT)));
-
             if (xobj != null)
             {
                 foreach (PdfName name in xobj.Keys)
@@ -110,25 +97,34 @@ namespace DocumentFinder
                         PdfName subtype = (PdfName)(PdfReader.GetPdfObject(tg.Get(PdfName.SUBTYPE)));
                         if (PdfName.IMAGE.Equals(subtype))
                         {
-                            int xrefIdx = ((PRIndirectReference)obj).Number;
-                            PdfObject pdfObj = doc.GetPdfObject(xrefIdx);
-                            PdfStream str = (PdfStream)(pdfObj);
-
-                            PdfImageObject pdfImage = new PdfImageObject((PRStream)str);
-                            Image img = pdfImage.GetDrawingImage();
-
-                            images.Add(img);
+                            try
+                            {
+                                int xrefIdx = ((PRIndirectReference)obj).Number;
+                                PdfObject pdfObj = doc.GetPdfObject(xrefIdx);
+                                PdfStream str = (PdfStream)(pdfObj);
+                                PdfImageObject pdfImage = new PdfImageObject((PRStream)str);
+                                Pix img = PixConverter.ToPix(new Bitmap(pdfImage.GetDrawingImage()));
+                                using (Page image = engine.Process(img))
+                                {
+                                    imagesText.Add(image.GetText());
+                                    img.Dispose();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Trace.WriteLine(ex);
+                            }
                         }
                         else if (PdfName.FORM.Equals(subtype) || PdfName.GROUP.Equals(subtype))
                         {
-                            images.AddRange(GetImagesFromPdfDict(tg, doc));
+                            imagesText.AddRange(GetImagesFromPdfDict(tg, doc, engine));
                         }
                     }
                 }
             }
-            res.Clear();
             xobj.Clear();
-            return images;
+            res.Clear();
+            return imagesText;
         }
     }
 }

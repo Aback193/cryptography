@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace DocumentFinder
 {
@@ -28,17 +26,14 @@ namespace DocumentFinder
             var files = new List<FileInfo>();
             foreach (string drive in drives)
             {
-                Trace.WriteLine("ALL WINDOWS DRIVES: " + drive);
                 var di = new DirectoryInfo(drive);
                 var directories = di.GetDirectories();
                 foreach (var directoryInfo in directories)
                 {
                     try
                     {
-                        if (!excludeDirs.Any(s => directoryInfo.FullName.ToString().Contains(s)) && MainWindow.main.stopWork == false)
-                        {
-                            GetFilesFromDirectory(directoryInfo.FullName, files);
-                        }
+                        if (!excludeDirs.Any(s => directoryInfo.FullName.ToString().Contains(s)) && MainWindow.main.stopWork == false)                        
+                            GetFilesFromDirectory(directoryInfo.FullName, files);                        
                     }
                     catch (Exception ex)
                     {
@@ -72,14 +67,13 @@ namespace DocumentFinder
                         {
                             MainWindow.main.updateProgress(directories.Length, counter, directoryInfo.Root.ToString(), "scanDrives", false);
                         }));
-                        if (!excludeDirs.Any(s => directoryInfo.FullName.ToString().Contains(s)))
-                        {
-                            GetFilesFromDirectory(directoryInfo.FullName, files);
-                        }
+                        if (!excludeDirs.Any(s => directoryInfo.FullName.ToString().Contains(s)))                        
+                            GetFilesFromDirectory(directoryInfo.FullName, files);                        
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Trace.WriteLine(ex.Message);
                 }
             }
         }
