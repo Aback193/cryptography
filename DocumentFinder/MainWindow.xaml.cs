@@ -110,8 +110,15 @@ namespace DocumentFinder
                             // Copy original files to destination if checkbox is checked
                             try
                             {
+                                string ext = helperMethods.extensionExtraction(sourceFile);
                                 if (copyFilesCheckValid == true && File.Exists(sourceFile))
+                                {
                                     File.Copy(sourceFile, destFile, true);
+                                }
+                                else if (ext == ".txt" && File.Exists(sourceFile))
+                                {
+                                    File.Copy(sourceFile, destFile, true);
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -194,64 +201,108 @@ namespace DocumentFinder
         }
 
         // Searching for text inside all files within TransferedFiles folder
-        public void search()
+        public async Task search()
         {
             try
             {
                 toogleElemets(false);
-
-                if (wasScanned == false && File.Exists(path + folderForFileCopy + pathLogFile))
-                    loadLogFile();
+                stopButtonReset();
 
                 string targetD = path + folderForFileCopy;
+
                 if (Directory.Exists(targetD))
                 {
                     string workDir = path + folderForFileCopy + "\\";
                     string searchTerm = "";
+
                     if (searchTb.Text.ToString() != "")
                     {
                         searchTerm = searchTb.Text.ToString();
                     }
+                    searchTerm = searchTerm.Trim();
 
                     var files = new List<FileInfo>();
+                    var resultList = new List<SearchResults>();
 
-                    Thread getTxtFiles = new Thread(() =>
+                    Task keyWordSearch = Task.Run(()=>
                     {
                         var di = new DirectoryInfo(workDir);
                         var extensions = new List<string> { ".txt" };
                         var fs = di.GetFiles("*.*", SearchOption.TopDirectoryOnly).Where(f => extensions.Contains(f.Extension.ToLower())).ToArray();
                         files.AddRange(fs);
-                    });
-                    getTxtFiles.Start();
 
-                    Thread keyWordSearch = new Thread(() =>
-                    {
-                        while (getTxtFiles.IsAlive)
+                        if (searchTerm != "" && !searchTerm.All(char.IsWhiteSpace))
                         {
-                        }
-
-                        if (searchTerm != "")
-                        {
-
                             bool caseSensitive = false;
-
                             this.Dispatcher.Invoke((Action)delegate ()
                             {
                                 if (cbxCS.IsChecked == true)
                                     caseSensitive = true;
-
-                                Window1 win = new Window1();
-
-                                win.parent = this;
-                                win.files = files;
-                                win.caseSensitive = caseSensitive;
-                                win.workDir = workDir;
-                                win.searchTerm = searchTerm;
-                                win.task = "search";
-
-                                win.ShowDialog();
+                                progressBar.Value = 0;
+                                progressBar.Maximum = 100;
                             });
 
+                            List<string> SearchWords = new List<string>();
+                            SearchWords = searchTerm.Split(' ').ToList();
+                            SearchWords.RemoveAll(x => x == "");
+                            int counter = 0;
+
+                            //search for term
+                            foreach (var file in files)
+                            {
+                                if (stopWork == false)
+                                {
+                                    counter++;
+                                    this.Dispatcher.Invoke((Action)delegate ()
+                                    {
+                                        int step = files.Count() / 100;
+                                        if (counter % step == 0)
+                                            progressBar.Value++;
+                                        progressStatus.Text = "Searching:" + counter.ToString() + "/" + files.Count().ToString() + " " + file.Name;
+                                    });
+
+                                    if (File.Exists(workDir + file.Name) && SearchWords.Count() > 0)
+                                    {
+                                        var lines = File.ReadAllLines(workDir + file.Name);
+
+                                        SearchWords.ForEach(x =>
+                                        {
+                                            x = x.Trim();
+                                            int foundLines;
+                                            if (!caseSensitive)
+                                            {
+                                                foundLines = lines.Where(y => y.ToLower().Contains(x.ToLower())).Count();
+                                            }
+                                            else
+                                            {
+                                                foundLines = lines.Where(y => y.Contains(x)).Count();
+                                            }
+
+                                            if (foundLines > 0)
+                                            {
+                                                if (resultList.Where(z => z.FilePath == file.Name).Count() > 0)
+                                                {
+                                                    resultList.Where(z => z.FilePath == file.Name).ToList().First().WordsFound.Add(x);
+                                                }
+                                                else
+                                                {
+                                                    SearchResults AddResult = new SearchResults();
+                                                    AddResult.FilePath = file.Name;
+                                                    AddResult.WordsFound.Add(x);
+                                                    resultList.Add(AddResult);
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                            //sort results
                             resultList.Sort(delegate (SearchResults x, SearchResults y)
                             {
                                 if (x.WordsFound.Count() > y.WordsFound.Count()) return -1;
@@ -265,6 +316,7 @@ namespace DocumentFinder
                             {
                                 searchResultTB.Items.Clear();
                             });
+
                             foreach (var result in resultList)
                             {
                                 this.Dispatcher.Invoke((Action)delegate ()
@@ -277,6 +329,15 @@ namespace DocumentFinder
                                     result.WordsFound.ForEach(x => item.Content = item.Content.ToString() + " " + x + ", ");
                                     item.Content = item.Content.ToString().Remove(item.Content.ToString().Length - 2);
                                     searchResultTB.Items.Add(item);
+                                    progressStatus.Text = "Finished search for: " + searchTerm + ". Found " + resultList.Count().ToString() + " files.";
+                                });
+                            }
+
+                            if(resultList.Count() == 0)
+                            {
+                                this.Dispatcher.Invoke((Action)delegate ()
+                                {
+                                    progressStatus.Text = "Finished search for: " + searchTerm + ". Found " + resultList.Count().ToString() + " files.";
                                 });
                             }
                         }
@@ -284,19 +345,18 @@ namespace DocumentFinder
                         {
                             MessageBox.Show("Search term can't be empty");
                         }
-                    });
-                    keyWordSearch.Start();
+                    }
+                    );
 
-                    new Thread(() =>
+                    await Task.WhenAll(keyWordSearch);
+                    keyWordSearch.Dispose();
+
+                    toogleElemets(true);
+
+                    if (stopWork == false)
                     {
-                        while (keyWordSearch.IsAlive)
-                        {
-                        }
-                        this.Dispatcher.Invoke((Action)delegate ()
-                        {
-                            toogleElemets(true);
-                        });
-                    }).Start();
+                        stopButtonReset();
+                    }
                 }
                 else
                 {
@@ -307,8 +367,9 @@ namespace DocumentFinder
             catch (Exception ex)
             {
                 Trace.WriteLine(ex.Message);
-            }            
+            }
         }
+
         private void btnPickClick(object sender, RoutedEventArgs e)
         {
             try

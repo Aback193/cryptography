@@ -126,14 +126,14 @@
         </Style>
 
         <Style x:Key="ContextMenuStyle" TargetType="ContextMenu">
-            <Setter Property="Background" Value="#18173f"></Setter>
-            <Setter Property="Foreground" Value="#ffffff"></Setter>
+            <Setter Property="Background" Value="#ffffff"></Setter>
+            <Setter Property="Foreground" Value="#18173f"></Setter>
             <Setter Property="FontFamily" Value="Agency FB"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
         </Style>
 
-        <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}" 
-            TargetType="{x:Type MenuItem}">
+        <!--<ControlTemplate x:Key="MenuItem.SubmenuItemTemplateKey" 
+            TargetType="MenuItem">
             <Border Name="Border" >
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -163,6 +163,8 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
+      
+
         <Style x:Key="{x:Type MenuItem}" TargetType="{x:Type MenuItem}">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Style.Triggers>
@@ -170,7 +172,9 @@
                     <Setter Property="Template" Value="{StaticResource {x:Static MenuItem.SubmenuItemTemplateKey}}"/>
                 </Trigger>
             </Style.Triggers>
-        </Style>
+        </Style>-->
+
+        
 
         <ContextMenu Style="{StaticResource ContextMenuStyle}" Visibility="Hidden" x:Key="cmScan">
             <MenuItem Header="Scan for files" Click="menuScanClick" />
