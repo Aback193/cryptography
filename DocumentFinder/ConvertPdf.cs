@@ -26,6 +26,8 @@ namespace DocumentFinder
                             Trace.WriteLine("| PDF: " + pdfFile + " | Current page: " + pageNumber.ToString());
                             text.Append(PdfTextExtractor.GetTextFromPage(reader, pageNumber));
                         }
+                        else
+                            return "";
                     }
                     return text.ToString();
                 }
@@ -71,6 +73,8 @@ namespace DocumentFinder
                                 Trace.WriteLine("PDF Image OCR to text Exception: " + ex);
                             }
                         }
+                        else
+                            return "";
                     }
                 }
             }
@@ -90,36 +94,41 @@ namespace DocumentFinder
             {
                 foreach (PdfName name in xobj.Keys)
                 {
-                    PdfObject obj = xobj.Get(name);
-                    if (obj.IsIndirect())
+                    if (MainWindow.main.stopWork == false)
                     {
-                        PdfDictionary tg = (PdfDictionary)(PdfReader.GetPdfObject(obj));
-                        PdfName subtype = (PdfName)(PdfReader.GetPdfObject(tg.Get(PdfName.SUBTYPE)));
-                        if (PdfName.IMAGE.Equals(subtype))
+                        PdfObject obj = xobj.Get(name);
+                        if (obj.IsIndirect())
                         {
-                            try
+                            PdfDictionary tg = (PdfDictionary)(PdfReader.GetPdfObject(obj));
+                            PdfName subtype = (PdfName)(PdfReader.GetPdfObject(tg.Get(PdfName.SUBTYPE)));
+                            if (PdfName.IMAGE.Equals(subtype))
                             {
-                                int xrefIdx = ((PRIndirectReference)obj).Number;
-                                PdfObject pdfObj = doc.GetPdfObject(xrefIdx);
-                                PdfStream str = (PdfStream)(pdfObj);
-                                PdfImageObject pdfImage = new PdfImageObject((PRStream)str);
-                                Pix img = PixConverter.ToPix(new Bitmap(pdfImage.GetDrawingImage()));
-                                using (Page image = engine.Process(img))
+                                try
                                 {
-                                    imagesText.Add(image.GetText());
-                                    img.Dispose();
+                                    int xrefIdx = ((PRIndirectReference)obj).Number;
+                                    PdfObject pdfObj = doc.GetPdfObject(xrefIdx);
+                                    PdfStream str = (PdfStream)(pdfObj);
+                                    PdfImageObject pdfImage = new PdfImageObject((PRStream)str);
+                                    Pix img = PixConverter.ToPix(new Bitmap(pdfImage.GetDrawingImage()));
+                                    using (Page image = engine.Process(img))
+                                    {
+                                        imagesText.Add(image.GetText());
+                                        img.Dispose();
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Trace.WriteLine(ex);
                                 }
                             }
-                            catch (Exception ex)
+                            else if (PdfName.FORM.Equals(subtype) || PdfName.GROUP.Equals(subtype))
                             {
-                                Trace.WriteLine(ex);
+                                imagesText.AddRange(GetImagesFromPdfDict(tg, doc, engine));
                             }
                         }
-                        else if (PdfName.FORM.Equals(subtype) || PdfName.GROUP.Equals(subtype))
-                        {
-                            imagesText.AddRange(GetImagesFromPdfDict(tg, doc, engine));
-                        }
                     }
+                    else
+                        break;
                 }
             }
             xobj.Clear();

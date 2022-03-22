@@ -36,12 +36,10 @@ C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\System.Val
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.csproj.AssemblyReference.cache
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.csproj.SuggestedBindingRedirects.cache
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\MainWindow.g.cs
-C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\Window1.g.cs
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\App.g.cs
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder_MarkupCompile.cache
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder_MarkupCompile.lref
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\MainWindow.baml
-C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\Window1.baml
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.g.resources
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.Properties.Resources.resources
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Debug\DocumentFinder.csproj.GenerateResource.cache

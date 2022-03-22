@@ -454,7 +454,7 @@ namespace DocumentFinder
                     progressBar.Maximum = pMax;
                     progressBar.Value++;
                 }
-                if(mode == "scanFinish" || mode == "scanDrivesFinish")
+                if(mode == "scanFinish" || mode == "scanDrivesFinish" || mode == "convertFinish")
                 {
                     progressBar.Maximum = pMax;
                     progressBar.Value = pMax;

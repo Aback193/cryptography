@@ -54,14 +54,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DocumentFinder.exe" size="196576">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DocumentFinder.exe" size="192992">
       <assemblyIdentity name="DocumentFinder" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>eiiH48hQN497QtCOdI9aKi57Pe74u9Jj+w0bIh6RZYI=</dsig:DigestValue>
+        <dsig:DigestValue>suUhbPWeRkQvhSqZM/EOXHoP8kifA1DMWFvVvKP4cYk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -37,30 +37,34 @@ namespace DocumentFinder
         {
             if (isMultiThreading == true)
             {
-                // Multi Threaded Conversion                
+                // Multi Threaded Conversion
                 Task[] tasks = new Task[length];
                 int currFileCounter = 0;
                 Enumerable.Range(0, length).ToList().ForEach(j =>
                 {
-                    tasks[j] = Task.Run(() =>
+                    if (MainWindow.main.stopWork == false)
                     {
-                        try
+                        tasks[j] = Task.Run(() =>
                         {
-                            Trace.WriteLine("Task Concurency task start <<<= " + j.ToString());
-                            string currFile = allConversionFilePaths[j];
+                            try
+                            {
+                                Trace.WriteLine("Task Concurency task start <<<= " + j.ToString());
+                                string currFile = allConversionFilePaths[j];
 
-                            conversion(currFile);
+                                conversion(currFile);
 
-                            currFileCounter++;
-                            MainWindow.main.updateProgress(length, currFileCounter, currFile, "convertP", false);
-                            Trace.WriteLine("Task Concurency task end =>>> " + j.ToString());
-                        }
-                        catch (Exception ex)
-                        {
-                            Trace.WriteLine("Task NO: " + j.ToString() + " multithread exception: " + ex);
-                        }
-                        return j + 1;
-                    });
+                                currFileCounter++;
+                                if (MainWindow.main.stopWork == false)
+                                    MainWindow.main.updateProgress(length, currFileCounter, currFile, "convertP", false);
+                                Trace.WriteLine("Task Concurency task end =>>> " + j.ToString());
+                            }
+                            catch (Exception ex)
+                            {
+                                Trace.WriteLine("Task NO: " + j.ToString() + " multithread exception: " + ex);
+                            }
+                            return j + 1;
+                        });
+                    };
                 });
 
                 await Task.WhenAll(tasks.ToArray());
@@ -78,15 +82,18 @@ namespace DocumentFinder
                 {
                     Enumerable.Range(0, length).ToList().ForEach(j =>
                     {
-                        try
+                        if (MainWindow.main.stopWork == false)
                         {
-                            string currFile = allConversionFilePaths[j];
-                            conversion(currFile, j);
-                        }
-                        catch (Exception ex)
-                        {
-                            Trace.WriteLine("Task NO: " + j.ToString() + " singlethread exception: " + ex);
-                        }
+                            try
+                            {
+                                string currFile = allConversionFilePaths[j];
+                                conversion(currFile, j);
+                            }
+                            catch (Exception ex)
+                            {
+                                Trace.WriteLine("Task NO: " + j.ToString() + " singlethread exception: " + ex);
+                            }
+                        };
                     });
                     return 1;
                 });
@@ -94,6 +101,7 @@ namespace DocumentFinder
                 await Task.WhenAll(t);
                 t.Dispose();
 
+                MainWindow.main.updateProgress(length, length, "convertFinish", "convertFinish", true);
                 MainWindow.main.toogleElemets(true);
                 if (MainWindow.main.stopWork == false && MainWindow.main.btnStopWork.Visibility == Visibility.Visible)
                     MainWindow.main.stopButtonReset();
@@ -105,7 +113,7 @@ namespace DocumentFinder
         {
             if (File.Exists(currFile))
             {
-                if (isMultiThreading == false)
+                if (isMultiThreading == false && MainWindow.main.stopWork == false)
                     MainWindow.main.updateProgress(length, index + 1, currFile, "convert", false);
 
                 string targetFilePath = targetD + "\\" + helperMethods.fileNameExtraction(currFile.ToString()) + ".txt";
