@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:DocumentFinder"
         mc:Ignorable="d" Title="MainWindow" WindowStyle="None"  WindowState="Maximized"
         Background="#ffffff"
+        PreviewKeyDown="searchTbEnterListener"
         >
     <Window.Resources>
         <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">

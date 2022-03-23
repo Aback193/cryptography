@@ -39,7 +39,7 @@ namespace DocumentFinder
             {
                 // Multi Threaded Conversion
                 Task[] tasks = new Task[length];
-                int currFileCounter = 0;
+                int conversionDoneCounter = 0;
                 Enumerable.Range(0, length).ToList().ForEach(j =>
                 {
                     if (MainWindow.main.stopWork == false)
@@ -48,15 +48,13 @@ namespace DocumentFinder
                         {
                             try
                             {
-                                Trace.WriteLine("Task Concurency task start <<<= " + j.ToString());
                                 string currFile = allConversionFilePaths[j];
-
                                 conversion(currFile);
-
-                                currFileCounter++;
                                 if (MainWindow.main.stopWork == false)
-                                    MainWindow.main.updateProgress(length, currFileCounter, currFile, "convertP", false);
-                                Trace.WriteLine("Task Concurency task end =>>> " + j.ToString());
+                                {
+                                    conversionDoneCounter++;
+                                    MainWindow.main.updateProgress(length, conversionDoneCounter, currFile, "convertMultiThread");
+                                }                                    
                             }
                             catch (Exception ex)
                             {
@@ -70,7 +68,10 @@ namespace DocumentFinder
                 await Task.WhenAll(tasks.ToArray());
                 foreach (var task in tasks) task.Dispose();
 
-                MainWindow.main.updateProgress(length, length, "convertFinish", "convertFinish", true);
+                if (MainWindow.main.stopWork == true)
+                    length = conversionDoneCounter;
+                MainWindow.main.updateProgress(length, length, "convertFinish", "convertFinish");
+
                 MainWindow.main.toogleElemets(true);
                 if (MainWindow.main.stopWork == false && MainWindow.main.btnStopWork.Visibility == Visibility.Visible)
                     MainWindow.main.stopButtonReset();
@@ -78,6 +79,7 @@ namespace DocumentFinder
             else
             {
                 // Single Threaded Conversion
+                int conversionDoneCounter = 0;
                 Task t = Task.Run(() =>
                 {
                     Enumerable.Range(0, length).ToList().ForEach(j =>
@@ -88,6 +90,7 @@ namespace DocumentFinder
                             {
                                 string currFile = allConversionFilePaths[j];
                                 conversion(currFile, j);
+                                conversionDoneCounter = j;
                             }
                             catch (Exception ex)
                             {
@@ -101,7 +104,10 @@ namespace DocumentFinder
                 await Task.WhenAll(t);
                 t.Dispose();
 
-                MainWindow.main.updateProgress(length, length, "convertFinish", "convertFinish", true);
+                if (MainWindow.main.stopWork == true)
+                    length = conversionDoneCounter;
+                MainWindow.main.updateProgress(length, length, "convertFinish", "convertFinish");
+
                 MainWindow.main.toogleElemets(true);
                 if (MainWindow.main.stopWork == false && MainWindow.main.btnStopWork.Visibility == Visibility.Visible)
                     MainWindow.main.stopButtonReset();
@@ -114,7 +120,7 @@ namespace DocumentFinder
             if (File.Exists(currFile))
             {
                 if (isMultiThreading == false && MainWindow.main.stopWork == false)
-                    MainWindow.main.updateProgress(length, index + 1, currFile, "convert", false);
+                    MainWindow.main.updateProgress(length, index + 1, currFile, "convert");
 
                 string targetFilePath = targetD + "\\" + helperMethods.fileNameExtraction(currFile.ToString()) + ".txt";
                 string lineFileExtension = helperMethods.extensionExtraction(currFile.Trim());

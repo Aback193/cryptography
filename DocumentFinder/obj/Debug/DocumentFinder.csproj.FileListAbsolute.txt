@@ -1,3 +1,4 @@
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\DocumentFormat.OpenXml.xml
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\x86\leptonica-1.80.0.dll
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\x86\tesseract41.dll
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\x64\leptonica-1.80.0.dll
@@ -23,7 +24,6 @@ C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\System.Val
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\Tesseract.dll
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\Xceed.Document.NET.dll
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\Xceed.Words.NET.dll
-C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\DocumentFormat.OpenXml.xml
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\itextsharp.xml
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\NLog.xml
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Debug\Ookii.Dialogs.Wpf.pdb

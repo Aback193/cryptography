@@ -28,6 +28,7 @@ namespace DocumentFinder
         public static List<string> excludeDirs = new List<string> { "C:\\Windows", "C:\\Recovery", "C:\\Program Files", "C:\\ProgramData", "C:\\$Recycle.Bin" };       
         const string folderForFileCopy = "\\TransferedFiles";
         const string pathLogFile = "\\_TransferedFilesPaths.txt";
+        const string helpFile = "DocFInder.pdf";
         string path = "C:";
 
         public MainWindow()
@@ -91,10 +92,9 @@ namespace DocumentFinder
                 Task search = Task.Run(() =>
                 {
                     var files = buildFileList.GetFiles();
-
-                    for (int i = 0; i < files.Count; i++)
-                    {
-                        if(stopWork == false)
+                    int filesCount = files.Count;
+                    for (int i = 0; i < filesCount; i++)
+                        if (stopWork == false)
                         {
                             string sourceFile = Path.Combine(files[i].DirectoryName.ToString(), files[i].ToString());
                             string destFile = Path.Combine(targetD, files[i].ToString());
@@ -105,20 +105,19 @@ namespace DocumentFinder
                                 tb1.Text = tb1.Text + files[i].DirectoryName.ToString() + "\\" + files[i].ToString() + "\n";
                             });
 
-                            updateProgress(files.Count, i + 1, files[i].DirectoryName.ToString() + "\\" + files[i].ToString(), "scan", false);
+                            updateProgress(filesCount, i + 1, files[i].DirectoryName.ToString() + "\\" + files[i].ToString(), "scan");
+                            if(filesCount == i + 1)
+                                updateProgress(filesCount, filesCount, "scanFinish", "scanFinish");
 
                             // Copy original files to destination if checkbox is checked
                             try
                             {
                                 string ext = helperMethods.extensionExtraction(sourceFile);
                                 if (copyFilesCheckValid == true && File.Exists(sourceFile))
-                                {
                                     File.Copy(sourceFile, destFile, true);
-                                }
                                 else if (ext == ".txt" && File.Exists(sourceFile))
-                                {
                                     File.Copy(sourceFile, destFile, true);
-                                }
+                                
                             }
                             catch (Exception ex)
                             {
@@ -128,10 +127,7 @@ namespace DocumentFinder
                             // Save all file paths to log file
                             string transferedFilesPathSave = path + folderForFileCopy + pathLogFile;
                             using (StreamWriter w = File.AppendText(transferedFilesPathSave))
-                            {
                                 w.WriteLine(sourceFile);
-                                Trace.WriteLine("SOURCE FILE: " + i.ToString() + ". " + sourceFile);
-                            }
 
                             // Save file paths for conversion
                             if (sourceFile.Substring(sourceFile.Length - 4).ToLower() != ".txt" && !allConversionFilePaths.Contains(sourceFile))
@@ -147,14 +143,12 @@ namespace DocumentFinder
                             wasScanned = true;
                         }
                         else
-                        {
+                            // Incomplete interrupted scan. Update progress status only with file paths written in LogFile.
                             if (File.Exists(path + folderForFileCopy + pathLogFile))
                             {
                                 int lineCount = File.ReadLines(path + folderForFileCopy + pathLogFile).Count(line => !string.IsNullOrWhiteSpace(line));
-                                updateProgress(lineCount, lineCount, "scanFinish", "scanFinish", false);
-                            }                            
-                        }
-                    }
+                                updateProgress(lineCount, lineCount, "scanFinish", "scanFinish");
+                            }
                 });
 
                 await Task.WhenAll(search);
@@ -164,7 +158,7 @@ namespace DocumentFinder
                 if (stopWork == false)
                 {
                     stopButtonReset();
-                    if (autoScanConvert.IsChecked == true)                    
+                    if (autoScanConvert.IsChecked == true)
                         convertAsync();                    
                 }
             }
@@ -178,15 +172,17 @@ namespace DocumentFinder
         public async Task convertAsync()
         {            
             toogleElemets(false);
+            bool startConversion = true;
 
             // Get file paths from log file for conversion
             if (wasScanned == false && File.Exists(path + folderForFileCopy + pathLogFile))
             {
                 stopButtonReset();
-                loadLogFile();
+                loadLogFile();                
             }
             else if (wasScanned == false && !File.Exists(path + folderForFileCopy + pathLogFile))
             {
+                startConversion = false;
                 MessageBox.Show("Log file containing scanned files doesn't exist! Please scan for files first.");
                 toogleElemets(true);
                 if (btnStopWork.Visibility == Visibility.Visible)
@@ -195,9 +191,12 @@ namespace DocumentFinder
             else if (wasScanned == true && File.Exists(path + folderForFileCopy + pathLogFile))
                 if (btnStopWork.Visibility == Visibility.Hidden)
                     stopButtonReset();
-            
-            Convert convert = new Convert(allConversionFilePaths, allConversionFilePaths.Count(), path + folderForFileCopy, ocrOption.IsChecked == true ? true : false, isMultiThreading);
-            convert.startConversion();
+
+            if (startConversion && allConversionFilePaths.Count() > 0)
+            {
+                Convert convert = new Convert(allConversionFilePaths, allConversionFilePaths.Count(), path + folderForFileCopy, ocrOption.IsChecked == true ? true : false, isMultiThreading);
+                convert.startConversion();
+            }
         }
 
         // Searching for text inside all files within TransferedFiles folder
@@ -255,10 +254,7 @@ namespace DocumentFinder
                                     counter++;
                                     this.Dispatcher.Invoke((Action)delegate ()
                                     {
-                                        int step = files.Count() / 100;
-                                        if (counter % step == 0)
-                                            progressBar.Value++;
-                                        progressStatus.Text = "Searching:" + counter.ToString() + "/" + files.Count().ToString() + " " + file.Name;
+                                        updateProgress(files.Count(), counter, file.Name, "search");
                                     });
 
                                     if (File.Exists(workDir + file.Name) && SearchWords.Count() > 0)
@@ -298,6 +294,7 @@ namespace DocumentFinder
                                 }
                                 else
                                 {
+                                    updateProgress(files.IndexOf(file), files.IndexOf(file), "searchFinish", "searchFinish");
                                     break;
                                 }
                             }
@@ -368,8 +365,7 @@ namespace DocumentFinder
             {
                 Trace.WriteLine(ex.Message);
             }
-        }
-
+        }       
         private void btnPickClick(object sender, RoutedEventArgs e)
         {
             try
@@ -408,6 +404,7 @@ namespace DocumentFinder
         {
             this.Close();
         }
+        // Reset STOP button state.
         public void stopButtonReset()
         {
             if (btnStopWork.Visibility == Visibility.Hidden)
@@ -421,12 +418,20 @@ namespace DocumentFinder
                 stopWork = false;
             }
         }
+        // Click on STOP button.
         private void stopClick(object sender, RoutedEventArgs e)
         {
             btnStopWork.Visibility = Visibility.Hidden;
             stopWork = true;
         }
-
+        // Pressing Enter key when in search term text box initiates the search. No need to press the button.
+        private void searchTbEnterListener(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && searchTb.IsFocused)
+            {
+                search();
+            }
+        }
         private void Options_Click(object sender, RoutedEventArgs e)
         {
             ContextMenu cm = this.FindResource("cmScan") as ContextMenu;
@@ -443,53 +448,48 @@ namespace DocumentFinder
             }
         }
 
-        public void updateProgress(int pMax, int counter, string filePath, string mode, bool isKill)
+        public void updateProgress(int pMax, int counter, string filePath, string mode)
         {
+            // Update UI progress bar % visualization here.
             progressBar.Dispatcher.Invoke((Action)delegate ()
             {
-                if (progressBar.Value == progressBar.Maximum && !isKill)
-                    progressBar.Value = 0;
-                if(progressBar.Value < progressBar.Maximum && !isKill)
+                if(progressBar.Value < progressBar.Maximum)
                 {
                     progressBar.Maximum = pMax;
                     progressBar.Value++;
-                }
-                if(mode == "scanFinish" || mode == "scanDrivesFinish" || mode == "convertFinish")
-                {
-                    progressBar.Maximum = pMax;
-                    progressBar.Value = pMax;
-                }                    
+                } else
+                        progressBar.Value = 0;
+                if (mode.Contains("Finish"))
+                    progressBar.Maximum = progressBar.Value = pMax;
             });
 
-            string modeFinal = "Converting: ";
-            string fileType = " files";
+            // Set variables needed for progress status text UI upate, following next.
+            string modeFinal = "Searching: ";
             string finalName = filePath;
-            if (mode == "scan")
-            {
-                modeFinal = "Scanning: ";
-                fileType = " files found";
-            }
-            else if (mode == "scanDrives" || mode == "scanDrivesFinish")
-            {
-                modeFinal = "Scanning: ";
-            }
-            else if (mode == "convert" || mode == "convertFinish" || mode == "convertP")
+            string endingText = " files";
+
+            if (mode.Contains("scan"))
+                if(mode.Contains("Drives"))
+                    endingText = " drives";
+                else
+                    endingText = " files found";
+            else if (mode.Contains("convert"))
             {
                 finalName = helperMethods.fileNameExtraction(filePath) + helperMethods.extensionExtraction(filePath);
-                if(mode == "convertP")
+                if (mode.Equals("convertMultiThread"))
                     modeFinal = "Converted: ";
+                else
+                    modeFinal = "Converting: ";
             }
+
+            // Update UI progress status text here.
             progressStatus.Dispatcher.Invoke((Action)delegate ()
-            {                
-                progressStatus.Text = modeFinal + counter.ToString() + ". " + finalName;
-                if (counter == pMax && mode != "scanDrives" && mode != "scanDrivesFinish" && mode != "convertP" && mode != "convertFinish")
-                    progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + fileType;
-                if (counter == pMax && mode == "scanDrivesFinish")
-                    progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + " drives";
-                if (counter == pMax && mode == "scanFinish")
-                    progressStatus.Text = "Finished " + "Scanning: " + pMax.ToString() + " files found";
-                if (counter == pMax && mode == "convertFinish")
-                    progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + fileType;
+            {
+                // Update text after action finish, if progress bar maximum was reached, else update text of currently running action
+                if (counter == pMax && mode.Contains("Finish"))
+                    progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + endingText;
+                else
+                    progressStatus.Text = modeFinal + counter.ToString() + "/" + pMax.ToString() + " " + finalName;
             });
         }
 
@@ -509,18 +509,26 @@ namespace DocumentFinder
         {
             isMultiThreading = !isMultiThreading;
         }
+        // Write PDF Help file from app's Resources folder to app's Temp folder, and launch!
         private void Help_Click(object sender, RoutedEventArgs e)
         {
-            //ovde dodati kod za otvaranje dokumentacije
-            return;
+            try
+            {
+                string locationToSavePdf = Path.Combine(Path.GetTempPath(), helpFile);
+                File.WriteAllBytes(locationToSavePdf, Properties.Resources.DocFInder);
+                Process.Start(locationToSavePdf);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+                Trace.WriteLine(ex.ToString());
+            }            
         }
-
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
             this.DragMove();
         }
-
         private void ListItemMouseDoubleClick(object sender, RoutedEventArgs e)
         {
             var item = sender as ListViewItem;
