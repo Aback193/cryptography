@@ -51,6 +51,10 @@ namespace DocumentFinder
             cbxCopy.IsEnabled = isEnabled;
             autoScanConvert.IsEnabled = isEnabled;
             cbxCS.IsEnabled = isEnabled;
+            searchTb.Focusable = isEnabled;
+            tb1.Focusable = isEnabled;
+            OptionsBtn.IsEnabled = isEnabled;
+            HelpBtn.IsEnabled = isEnabled;
         }
 
         private void btnAutoFindConvertClick(object sender, RoutedEventArgs e)
@@ -229,6 +233,7 @@ namespace DocumentFinder
                         var extensions = new List<string> { ".txt" };
                         var fs = di.GetFiles("*.*", SearchOption.TopDirectoryOnly).Where(f => extensions.Contains(f.Extension.ToLower())).ToArray();
                         files.AddRange(fs);
+                        files.RemoveAll(x => x.Name == "_TransferedFilesPaths.txt");
 
                         if (searchTerm != "" && !searchTerm.All(char.IsWhiteSpace))
                         {

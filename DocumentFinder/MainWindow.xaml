@@ -21,6 +21,33 @@
             </Border>
         </ControlTemplate>
 
+        <ControlTemplate x:Key="HeaderButtonTemplate" TargetType="{x:Type Button}">
+            <Border x:Name="BorderBackground">
+                <Border.Background>
+                    <SolidColorBrush Color="#022140"></SolidColorBrush>
+                </Border.Background>
+                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"></ContentPresenter>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter TargetName="BorderBackground" Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#022140">
+                            </SolidColorBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="BorderBackground" Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#265077">
+                            </SolidColorBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
         <ControlTemplate x:Key="AutoButtonTemplate" TargetType="{x:Type Button}">
             <Border CornerRadius="30"
                                 Height="50"
@@ -79,10 +106,9 @@
             <Setter Property="FontSize" Value="25"></Setter>
 
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
+                <Trigger Property="IsMouseOver" Value="true">
                     <Setter Property="Background" Value="#265077"></Setter>
                     <Setter Property="Foreground" Value="#ffffff"></Setter>
-
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -92,7 +118,7 @@
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Foreground" Value="#18173f"></Setter>
             <Setter Property="Background" Value="Transparent"></Setter>
-            <Setter Property="FontFamily" Value="Fonts/#Teko"></Setter>
+            <Setter Property="FontFamily" Value="Agency FB"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
         </Style>
 
@@ -175,7 +201,7 @@
             </Style.Triggers>
         </Style>-->
 
-        
+
 
         <ContextMenu Style="{StaticResource ContextMenuStyle}" Visibility="Hidden" x:Key="cmScan">
             <MenuItem Header="Scan for files" Click="menuScanClick" />
@@ -203,7 +229,7 @@
                        TextWrapping="Wrap"
                        HorizontalAlignment="Left"
                        FontSize="15" />
-                    
+
                     <TextBlock Name="progressStatus"
                        Grid.Column="1"
                        TextWrapping="Wrap"
@@ -223,11 +249,11 @@
                     Maximum="100"                    
                     HorizontalAlignment="Right"
                     />
-                    
+
                 </Grid>
             </StatusBarItem>
         </StatusBar>
-        
+
         <Grid>
 
             <Grid.RowDefinitions>
@@ -266,10 +292,10 @@
                        >
                 </TextBlock>
 
-                <Button Grid.Column="1" Margin="10,0,10,0" x:Name="OptionsBtn" BorderThickness="0" Content="OPTIONS" Style="{StaticResource ButtonStyle}" Click="Options_Click">
+                <Button Grid.Column="1" Template="{StaticResource HeaderButtonTemplate}" Margin="10,0,10,0" x:Name="OptionsBtn" BorderThickness="0" Content="OPTIONS" Style="{StaticResource ButtonStyle}" Click="Options_Click">
                 </Button>
 
-                <Button Grid.Column="2" Margin="10,0,10,0" x:Name="HelpBtn" BorderThickness="0" Content="HELP" Style="{StaticResource ButtonStyle}" Click="Help_Click">
+                <Button Grid.Column="2" Template="{StaticResource HeaderButtonTemplate}" Margin="10,0,10,0" x:Name="HelpBtn" BorderThickness="0" Content="HELP" Style="{StaticResource ButtonStyle}" Click="Help_Click">
                 </Button>
 
                 <Button Style="{StaticResource ButtonStyle}" 
@@ -312,8 +338,9 @@
 
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="190*"/>
+                        <ColumnDefinition Width="51*"/>
+                        <ColumnDefinition Width="139*"/>
                     </Grid.ColumnDefinitions>
 
                     <Button Template="{StaticResource AutoButtonTemplate}" Content="SCAN AND CONVERT"
@@ -324,7 +351,7 @@
                     Grid.Column="0"                        
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center" Margin="0,50,0.4,50">
                     </Button>
 
                     <Button Template="{StaticResource ButtonTemplate}" Content="SCAN"
@@ -334,15 +361,13 @@
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center" Margin="0,25,0.4,25">
                     </Button>
 
-                   <Button Template="{StaticResource ButtonTemplate}" Content="CONVERT"
+                    <Button Template="{StaticResource ButtonTemplate}" Content="CONVERT"
                     Name="btnConvert"
                     Style="{StaticResource ButtonStyle}"
-                    Click="btnConvertClick"
-                    Grid.Column="1">
-                    </Button>
+                    Click="btnConvertClick" Grid.ColumnSpan="3" Margin="190,0,-0.2,0"/>
                 </Grid>
 
                 <CheckBox Grid.Row="1"
@@ -366,7 +391,7 @@
                      HorizontalAlignment="Center"
                      VerticalAlignment="Stretch"
                      Name="conversionDestination">
-                    </Label>
+                </Label>
 
                 <Button Template="{StaticResource PickButtonTemplate}" Content="PICK"
                     Grid.Row="5"
