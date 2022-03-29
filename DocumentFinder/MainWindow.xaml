@@ -159,50 +159,6 @@
             <Setter Property="FontSize" Value="20"></Setter>
         </Style>
 
-        <!--<ControlTemplate x:Key="MenuItem.SubmenuItemTemplateKey" 
-            TargetType="MenuItem">
-            <Border Name="Border" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="Icon"/>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <ContentPresenter 
-                        Name="Icon"
-                        Margin="2,0,2,0"
-                        VerticalAlignment="Center"
-                        ContentSource="Icon"/>
-                    <ContentPresenter 
-                        Name="HeaderHost"
-                        Grid.Column="1"
-                        ContentSource="Header"
-                        RecognizesAccessKey="True"/>
-                </Grid>
-            </Border>
-            <ControlTemplate.Triggers>
-                <Trigger Property="Icon" Value="{x:Null}">
-                    <Setter TargetName="Icon" Property="Visibility" Value="Hidden"/>
-                    <Setter TargetName="Border" Property="Background" Value="#18173f"/>
-                </Trigger>
-                <Trigger Property="IsHighlighted" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="#265077"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-
-      
-
-        <Style x:Key="{x:Type MenuItem}" TargetType="{x:Type MenuItem}">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Style.Triggers>
-                <Trigger Property="Role" Value="SubmenuItem">
-                    <Setter Property="Template" Value="{StaticResource {x:Static MenuItem.SubmenuItemTemplateKey}}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>-->
-
-
-
         <ContextMenu Style="{StaticResource ContextMenuStyle}" Visibility="Hidden" x:Key="cmScan">
             <MenuItem Header="Scan for files" Click="menuScanClick" />
             <MenuItem Header="Convert files" Click="menuConvertClick" />
@@ -338,9 +294,8 @@
 
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190*"/>
-                        <ColumnDefinition Width="51*"/>
-                        <ColumnDefinition Width="139*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Button Template="{StaticResource AutoButtonTemplate}" Content="SCAN AND CONVERT"
@@ -348,10 +303,10 @@
                     Visibility="Collapsed"
                     Name="btnFindAuto"
                     Click="btnAutoFindConvertClick"
-                    Grid.Column="0"                        
+                    Grid.ColumnSpan="2"                        
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
-                    VerticalAlignment="Center" Margin="0,50,0.4,50">
+                    VerticalAlignment="Center">
                     </Button>
 
                     <Button Template="{StaticResource ButtonTemplate}" Content="SCAN"
@@ -361,13 +316,13 @@
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
-                    VerticalAlignment="Center" Margin="0,25,0.4,25">
+                    VerticalAlignment="Center">
                     </Button>
 
                     <Button Template="{StaticResource ButtonTemplate}" Content="CONVERT"
                     Name="btnConvert"
                     Style="{StaticResource ButtonStyle}"
-                    Click="btnConvertClick" Grid.ColumnSpan="3" Margin="190,0,-0.2,0"/>
+                    Click="btnConvertClick" Grid.Column="1"/>
                 </Grid>
 
                 <CheckBox Grid.Row="1"
@@ -404,8 +359,9 @@
                 <TextBox Grid.Row="6"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Stretch"
-                     Margin="50,32,50,50"
+                     Margin="50,50,50,50"
                      Name="tb1"
+                     Visibility="Collapsed"
                      Style="{StaticResource TextBoxStyle}"
                      VerticalScrollBarVisibility="Auto"
                      HorizontalScrollBarVisibility="Auto">
@@ -448,7 +404,7 @@
 
                 </Button>
 
-                <ListView Style="{StaticResource ListViewStyle}"
+                <!--<ListView Style="{StaticResource ListViewStyle}"
                      Name="searchResultTB"
                      Grid.Row="3"
                      Grid.Column="0"
@@ -457,7 +413,46 @@
                      BorderBrush="#0f0f35"
                      Margin="50"
                      >
-                </ListView>
+                </ListView>-->
+
+                <Grid Grid.Row="3" Grid.Column="0">
+                    <DataGrid x:Name="searchResultTB" AutoGenerateColumns="False"
+                              Foreground="#022140" 
+                              Background="#ffffff" 
+                              FontFamily="Agency FB" 
+                              FontSize="20"
+                              IsReadOnly="True"
+                              Margin="50" BorderThickness="0" BorderBrush="#ffffff"
+                              ItemsSource="{Binding}"
+                              CanUserSortColumns="False"
+                              MouseDoubleClick="ListItemMouseDoubleClick">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="ToolTip">
+                                    <Setter.Value>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding OriginalPath}"/>
+                                        </StackPanel>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="20">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Image}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Width="*" Header="File name"  Binding="{Binding FileName}"></DataGridTextColumn>
+                            <DataGridTextColumn Width="*" Header="Terms found" Binding="{Binding Display}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
 
             </Grid>
 
