@@ -425,7 +425,7 @@
                               Foreground="#022140" 
                               Background="#ffffff" 
                               FontFamily="Agency FB" 
-                              FontSize="20"
+                              FontSize="24"
                               IsReadOnly="True"
                               Margin="50" BorderThickness="0" BorderBrush="#ffffff"
                               ItemsSource="{Binding}"

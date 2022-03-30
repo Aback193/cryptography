@@ -660,24 +660,31 @@ namespace DocumentFinder
         // Load Log file
         public void loadLogFile()
         {
-            allConversionFilePaths.Clear();
-            pdfConversionFilePaths.Clear();
-            docConversionFilePaths.Clear();
-            docxConversionFilePaths.Clear();
-            string[] pathLogLines = File.ReadAllLines(path + folderForFileCopy + pathLogFile);
-            foreach (string line in pathLogLines)
+            try
             {
-                string lineFinal = line.Trim();
-                string lineFileExtension = helperMethods.extensionExtraction(line.Trim());
-                if (lineFileExtension != ".txt")
-                    allConversionFilePaths.Add(lineFinal);
-                if (lineFileExtension == ".pdf")
-                    pdfConversionFilePaths.Add(lineFinal);
-                else if (lineFileExtension == ".doc")
-                    docConversionFilePaths.Add(lineFinal);
-                else if (lineFileExtension == ".docx")
-                    docxConversionFilePaths.Add(lineFinal);
+                allConversionFilePaths.Clear();
+                pdfConversionFilePaths.Clear();
+                docConversionFilePaths.Clear();
+                docxConversionFilePaths.Clear();
+                string[] pathLogLines = File.ReadAllLines(path + folderForFileCopy + pathLogFile);
+                foreach (string line in pathLogLines)
+                {
+                    string lineFinal = line.Trim();
+                    string lineFileExtension = helperMethods.extensionExtraction(line.Trim());
+                    if (lineFileExtension != ".txt")
+                        allConversionFilePaths.Add(lineFinal);
+                    if (lineFileExtension == ".pdf")
+                        pdfConversionFilePaths.Add(lineFinal);
+                    else if (lineFileExtension == ".doc")
+                        docConversionFilePaths.Add(lineFinal);
+                    else if (lineFileExtension == ".docx")
+                        docxConversionFilePaths.Add(lineFinal);
+                }
             }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.ToString());
+            }            
         }
         // Open files when clicked on search result
         private void OpenOriginalFile(string filePathWithExtension, string originalFileSourceFolder)
