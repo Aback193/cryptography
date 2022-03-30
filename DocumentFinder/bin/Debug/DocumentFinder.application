@@ -7,14 +7,14 @@
     <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="DocumentFinder.exe.manifest" size="13808">
+    <dependentAssembly dependencyType="install" codebase="DocumentFinder.exe.manifest" size="13809">
       <assemblyIdentity name="DocumentFinder.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>rIw6iOCvbVGEDcXFwj9b8DC3wtsdn8CXnp9xYIxqYBM=</dsig:DigestValue>
+        <dsig:DigestValue>f/EpraNrvDtJVbw7RsYtIaJYZDO6r9yxJiDbox/3x2w=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
