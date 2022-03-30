@@ -214,6 +214,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
+                <RowDefinition Height="300"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -367,22 +368,6 @@
                      HorizontalScrollBarVisibility="Auto">
                 </TextBox>
 
-                <RichTextBox Grid.Row="6"
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Stretch"
-                     Margin="50,50,50,105"
-                     Name="rtb"
-                     BorderBrush="#ffffff"
-                     BorderThickness="0"
-                     Visibility="Visible"
-                     FontFamily="Agency FB" 
-                     FontSize="20"
-                     IsReadOnly="True"
-                     VerticalScrollBarVisibility="Auto"
-                     HorizontalScrollBarVisibility="Auto"
-                     >
-                </RichTextBox>
-
 
             </Grid>
 
@@ -431,8 +416,12 @@
                      >
                 </ListView>-->
 
-                <Grid Grid.Row="3" Grid.Column="0">
-                    <DataGrid x:Name="searchResultTB" AutoGenerateColumns="False"
+
+
+            </Grid>
+
+            <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                <DataGrid x:Name="searchResultTB" AutoGenerateColumns="False"
                               Foreground="#022140" 
                               Background="#ffffff" 
                               FontFamily="Agency FB" 
@@ -442,36 +431,39 @@
                               ItemsSource="{Binding}"
                               CanUserSortColumns="False"
                               SelectionMode="Single"
-                              SelectionChanged="searchResultTB_SelectionChanged"
+                              GridLinesVisibility="None"
                               MouseDoubleClick="ListItemMouseDoubleClick">
-                        <DataGrid.Resources>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="ToolTip">
-                                    <Setter.Value>
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding OriginalPath}"/>
-                                        </StackPanel>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-                                <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-                            </Style>
-                        </DataGrid.Resources>
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn Width="20">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Image Source="{Binding Image}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Width="*" Header="File name"  Binding="{Binding FileName}"></DataGridTextColumn>
-                            <DataGridTextColumn Width="*" Header="Terms found" Binding="{Binding Display}"></DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                            <Setter Property="FontWeight" Value="Bold"></Setter>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <StackPanel>
+                                        <TextBlock Text="File path:" FontSize="10" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding OriginalPath}"/>
+                                    </StackPanel>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="20">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Image}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="*" Header="File name"  Binding="{Binding FileName}"></DataGridTextColumn>
+                        <DataGridTextColumn Width="*" Header="Terms found" Binding="{Binding Display}"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
 
         </Grid>

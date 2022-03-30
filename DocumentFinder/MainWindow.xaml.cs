@@ -590,72 +590,72 @@ namespace DocumentFinder
         }
 
         // DataGrid Item selection preview.
-        private async void searchResultTB_SelectionChanged(object sender, EventArgs e)
-        {
-            int startIndex = 0;
-            int endIndex = 0;
+        //private async void searchResultTB_SelectionChanged(object sender, EventArgs e)
+        //{
+        //    int startIndex = 0;
+        //    int endIndex = 0;
 
-            Task t = Task.Run(() =>
-            {
-                object selectedItem = null;
-                Application.Current.Dispatcher.Invoke((Action)(() =>
-                {
-                    selectedItem = searchResultTB.SelectedItem;
-                    rtb.Document.Blocks.Clear();
-                }));
+        //    Task t = Task.Run(() =>
+        //    {
+        //        object selectedItem = null;
+        //        Application.Current.Dispatcher.Invoke((Action)(() =>
+        //        {
+        //            selectedItem = searchResultTB.SelectedItem;
+        //            rtb.Document.Blocks.Clear();
+        //        }));
 
-                if (selectedItem == null)
-                    return;
-                var file = selectedItem as SearchResults;
+        //        if (selectedItem == null)
+        //            return;
+        //        var file = selectedItem as SearchResults;
 
-                string[] textLines = File.ReadAllLines(path + folderForFileCopy + "\\" + file.FilePath);
-                string extractedLines = "";
+        //        string[] textLines = File.ReadAllLines(path + folderForFileCopy + "\\" + file.FilePath);
+        //        string extractedLines = "";
 
-                int lineBreak = 0;
-                bool occurrenceFound = false;
+        //        int lineBreak = 0;
+        //        bool occurrenceFound = false;
 
-                foreach (string line in textLines)
-                {
-                    if (line.ToString().Contains(file.WordsFound[0].ToString()) || occurrenceFound == true)
-                    {
-                        extractedLines = extractedLines + line;
-                        if (line.ToString().Contains(file.WordsFound[0].ToString()))
-                        {
-                            startIndex = line.IndexOf(file.WordsFound[0].ToString());
-                            endIndex = startIndex + file.WordsFound[0].ToString().Length;
-                        }
-                        occurrenceFound = true;
-                        lineBreak++;
-                    }
-                    if (lineBreak > 6)
-                        break;
-                }
-                Application.Current.Dispatcher.Invoke((Action)(() =>
-                {
-                    rtb.AppendText(extractedLines);
-                }));
-            });
+        //        foreach (string line in textLines)
+        //        {
+        //            if (line.ToString().Contains(file.WordsFound[0].ToString()) || occurrenceFound == true)
+        //            {
+        //                extractedLines = extractedLines + line;
+        //                if (line.ToString().Contains(file.WordsFound[0].ToString()))
+        //                {
+        //                    startIndex = line.IndexOf(file.WordsFound[0].ToString());
+        //                    endIndex = startIndex + file.WordsFound[0].ToString().Length;
+        //                }
+        //                occurrenceFound = true;
+        //                lineBreak++;
+        //            }
+        //            if (lineBreak > 6)
+        //                break;
+        //        }
+        //        Application.Current.Dispatcher.Invoke((Action)(() =>
+        //        {
+        //            rtb.AppendText(extractedLines);
+        //        }));
+        //    });
 
-            await Task.WhenAll(t);
-            t.Dispose();
+        //    await Task.WhenAll(t);
+        //    t.Dispose();
 
-            HighlightText(rtb, startIndex + 2, endIndex + 2, System.Windows.Media.Color.FromRgb(255, 239, 0));
-        }
+        //    HighlightText(rtb, startIndex + 2, endIndex + 2, System.Windows.Media.Color.FromRgb(255, 239, 0));
+        //}
 
-        // Highlight search term
-        public static void HighlightText(RichTextBox richTextBox, int startPoint, int endPoint, System.Windows.Media.Color color)
-        {
-            try
-            {
-                TextPointer pointer = richTextBox.Document.ContentStart;
-                TextRange range = new TextRange(pointer.GetPositionAtOffset(startPoint), pointer.GetPositionAtOffset(endPoint));
-                range.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(color));
-            }
-            catch(Exception ex)
-            {
-                Trace.WriteLine(ex.ToString());
-            }
-        }
+        //// Highlight search term
+        //public static void HighlightText(RichTextBox richTextBox, int startPoint, int endPoint, System.Windows.Media.Color color)
+        //{
+        //    try
+        //    {
+        //        TextPointer pointer = richTextBox.Document.ContentStart;
+        //        TextRange range = new TextRange(pointer.GetPositionAtOffset(startPoint), pointer.GetPositionAtOffset(endPoint));
+        //        range.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(color));
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
 
         // Load Log file
         public void loadLogFile()
