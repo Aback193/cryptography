@@ -182,7 +182,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include=".editorconfig" />
-    <None Include="DocFInder.pdf" />
     <None Include="packages.config" />
     <Resource Include="Resources\DocFInder.pdf" />
     <None Include="testdata\eng.traineddata">

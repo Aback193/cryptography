@@ -13,6 +13,10 @@ using System.Windows.Media;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Drawing;
+using System.Windows.Data;
+using System.IO.MemoryMappedFiles;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DocumentFinder
 {
@@ -83,22 +87,23 @@ namespace DocumentFinder
         {
             try
             {
-                tb1.Clear();
+                //tb1.Clear();
                 setBottomStatusBar();
                 toogleElemets(false);
                 stopButtonReset();
-                bool copyFilesCheckValid = cbxCopy.IsChecked == true ? true : false;
-                BuildFileList buildFileList = new BuildFileList(excludeDirs, extensions);
-
-                // Get current directory & make new directory for file transfer if non existent
-                string targetD = path + folderForFileCopy;
-                if (!Directory.Exists(targetD))
-                    Directory.CreateDirectory(targetD);
-                else if (File.Exists(path + folderForFileCopy + pathLogFile))
-                    File.Delete(path + folderForFileCopy + pathLogFile);
+                bool copyFilesCheckValid = cbxCopy.IsChecked == true ? true : false;                
 
                 Task search = Task.Run(() =>
                 {
+                    BuildFileList buildFileList = new BuildFileList(excludeDirs, extensions);
+
+                    // Get current directory & make new directory for file transfer if non existent
+                    string targetD = path + folderForFileCopy;
+                    if (!Directory.Exists(targetD))
+                        Directory.CreateDirectory(targetD);
+                    else if (File.Exists(path + folderForFileCopy + pathLogFile))
+                        File.Delete(path + folderForFileCopy + pathLogFile);
+
                     var files = buildFileList.GetFiles();
                     int filesCount = files.Count;
                     for (int i = 0; i < filesCount; i++)
@@ -108,7 +113,7 @@ namespace DocumentFinder
                             string destFile = Path.Combine(targetD, files[i].ToString());
 
                             // Update UI thread TextBox with paths.
-                            //tb1.Dispatcher.Invoke((Action)delegate ()
+                            //Application.Current.Dispatcher.BeginInvoke((Action)(() =>
                             //{
                             //    tb1.Text = tb1.Text + files[i].DirectoryName.ToString() + "\\" + files[i].ToString() + "\n";
                             //});
@@ -242,13 +247,13 @@ namespace DocumentFinder
                         if (searchTerm != "" && !searchTerm.All(char.IsWhiteSpace))
                         {
                             bool caseSensitive = false;
-                            this.Dispatcher.Invoke((Action)delegate ()
+                            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
                             {
                                 if (cbxCS.IsChecked == true)
                                     caseSensitive = true;
                                 progressBar.Value = 0;
                                 progressBar.Maximum = 100;
-                            });
+                            }));
 
                             List<string> SearchWords = new List<string>();
                             SearchWords = searchTerm.Split(' ').ToList();
@@ -261,10 +266,10 @@ namespace DocumentFinder
                                 if (stopWork == false)
                                 {
                                     counter++;
-                                    this.Dispatcher.Invoke((Action)delegate ()
+                                    Application.Current.Dispatcher.BeginInvoke((Action)(() =>
                                     {
                                         updateProgress(files.Count(), counter, file.Name, "search");
-                                    });
+                                    }));
 
                                     if (File.Exists(workDir + file.Name) && SearchWords.Count() > 0)
                                     {
@@ -318,14 +323,14 @@ namespace DocumentFinder
                             });
 
                             //prepare table for data
-                            this.Dispatcher.Invoke((Action)delegate ()
+                            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
                             {
                                 searchResultTB.ItemsSource = null;
                                 searchResultTB.Items.Refresh();
 
-                            });
+                            }));
 
-                            this.Dispatcher.Invoke((Action)delegate ()
+                            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
                             {
                                 if (allConversionFilePaths.Count == 0)
                                     loadLogFile();
@@ -374,7 +379,7 @@ namespace DocumentFinder
 
                                     progressStatus.Text = "Finished search for: " + searchTerm + ". Found " + resultList.Count().ToString() + " files.";
                                 }
-                            });
+                            }));
                         }
                         else
                         {
@@ -492,7 +497,7 @@ namespace DocumentFinder
         public void updateProgress(int pMax, int counter, string filePath, string mode)
         {
             // Update UI progress bar % visualization here.
-            progressBar.Dispatcher.Invoke((Action)delegate ()
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
                 if (progressBar.Value < progressBar.Maximum)
                 {
@@ -503,7 +508,7 @@ namespace DocumentFinder
                     progressBar.Value = 0;
                 if (mode.Contains("Finish"))
                     progressBar.Maximum = progressBar.Value = pMax;
-            });
+            }));
 
             // Set variables needed for progress status text UI upate, following next.
             string modeFinal = "Searching: ";
@@ -525,14 +530,14 @@ namespace DocumentFinder
             }
 
             // Update UI progress status text here.
-            progressStatus.Dispatcher.Invoke((Action)delegate ()
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
                 // Update text after action finish, if progress bar maximum was reached, else update text of currently running action
                 if (counter == pMax && mode.Contains("Finish"))
                     progressStatus.Text = "Finished " + modeFinal + pMax.ToString() + endingText;
                 else
                     progressStatus.Text = modeFinal + counter.ToString() + "/" + pMax.ToString() + " " + finalName;
-            });
+            }));
         }
 
         private void menuScanClick(object sender, RoutedEventArgs e)
@@ -583,6 +588,75 @@ namespace DocumentFinder
             OpenOriginalFile(path + folderForFileCopy + "\\" + file.FilePath, file.OriginalPath);
 
         }
+
+        // DataGrid Item selection preview.
+        private async void searchResultTB_SelectionChanged(object sender, EventArgs e)
+        {
+            int startIndex = 0;
+            int endIndex = 0;
+
+            Task t = Task.Run(() =>
+            {
+                object selectedItem = null;
+                Application.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    selectedItem = searchResultTB.SelectedItem;
+                    rtb.Document.Blocks.Clear();
+                }));
+
+                if (selectedItem == null)
+                    return;
+                var file = selectedItem as SearchResults;
+
+                string[] textLines = File.ReadAllLines(path + folderForFileCopy + "\\" + file.FilePath);
+                string extractedLines = "";
+
+                int lineBreak = 0;
+                bool occurrenceFound = false;
+
+                foreach (string line in textLines)
+                {
+                    if (line.ToString().Contains(file.WordsFound[0].ToString()) || occurrenceFound == true)
+                    {
+                        extractedLines = extractedLines + line;
+                        if (line.ToString().Contains(file.WordsFound[0].ToString()))
+                        {
+                            startIndex = line.IndexOf(file.WordsFound[0].ToString());
+                            endIndex = startIndex + file.WordsFound[0].ToString().Length;
+                        }
+                        occurrenceFound = true;
+                        lineBreak++;
+                    }
+                    if (lineBreak > 6)
+                        break;
+                }
+                Application.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    rtb.AppendText(extractedLines);
+                }));
+            });
+
+            await Task.WhenAll(t);
+            t.Dispose();
+
+            HighlightText(rtb, startIndex + 2, endIndex + 2, System.Windows.Media.Color.FromRgb(255, 239, 0));
+        }
+
+        // Highlight search term
+        public static void HighlightText(RichTextBox richTextBox, int startPoint, int endPoint, System.Windows.Media.Color color)
+        {
+            try
+            {
+                TextPointer pointer = richTextBox.Document.ContentStart;
+                TextRange range = new TextRange(pointer.GetPositionAtOffset(startPoint), pointer.GetPositionAtOffset(endPoint));
+                range.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(color));
+            }
+            catch(Exception ex)
+            {
+                Trace.WriteLine(ex.ToString());
+            }
+        }
+
         // Load Log file
         public void loadLogFile()
         {
@@ -639,7 +713,10 @@ namespace DocumentFinder
             string outText = "";
             foreach (DriveInfo drive in foundDrivesInfo)
                 outText = outText + "  [ " + drive.VolumeLabel + " " + drive.Name + " ]";
-            statusBar.Text = "Drives found: " + outText;
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                statusBar.Text = "Drives found: " + outText;
+            }));
         }
     }
 }

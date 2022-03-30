@@ -41,10 +41,7 @@ namespace DocumentFinder
                     }
                 }
             }
-            MainWindow.main.Dispatcher.BeginInvoke(new Action(delegate ()
-            {
-                MainWindow.main.updateProgress(drives.Length, drives.Length, "scanDrivesFinish", "scanDrivesFinish");
-            }));
+            MainWindow.main.updateProgress(drives.Length, drives.Length, "scanDrivesFinish", "scanDrivesFinish");
             Thread.Sleep(1000);
             return files;
         }
@@ -63,10 +60,7 @@ namespace DocumentFinder
                     if (MainWindow.main.stopWork == false)
                     {
                         counter++;
-                        MainWindow.main.Dispatcher.BeginInvoke(new Action(delegate ()
-                        {
-                            MainWindow.main.updateProgress(directories.Length, counter, directoryInfo.Root.ToString(), "scanDrives");
-                        }));
+                        MainWindow.main.updateProgress(directories.Length, counter, directoryInfo.Root.ToString(), "scanDrives");
                         if (!excludeDirs.Any(s => directoryInfo.FullName.ToString().Contains(s)))                        
                             GetFilesFromDirectory(directoryInfo.FullName, files);                        
                     }

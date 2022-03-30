@@ -367,6 +367,22 @@
                      HorizontalScrollBarVisibility="Auto">
                 </TextBox>
 
+                <RichTextBox Grid.Row="6"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     Margin="50,50,50,105"
+                     Name="rtb"
+                     BorderBrush="#ffffff"
+                     BorderThickness="0"
+                     Visibility="Visible"
+                     FontFamily="Agency FB" 
+                     FontSize="20"
+                     IsReadOnly="True"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     >
+                </RichTextBox>
+
 
             </Grid>
 
@@ -425,6 +441,8 @@
                               Margin="50" BorderThickness="0" BorderBrush="#ffffff"
                               ItemsSource="{Binding}"
                               CanUserSortColumns="False"
+                              SelectionMode="Single"
+                              SelectionChanged="searchResultTB_SelectionChanged"
                               MouseDoubleClick="ListItemMouseDoubleClick">
                         <DataGrid.Resources>
                             <Style TargetType="DataGridCell">
