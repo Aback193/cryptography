@@ -45,6 +45,18 @@ namespace DocumentFinder
             setBottomStatusBar();
             conversionDestination.Content = "Conversion destination: " + path + folderForFileCopy;
             main = this;
+
+            var activeScreen = System.Windows.Forms.Screen.FromHandle(new WindowInteropHelper(Application.Current.MainWindow).Handle);
+            Trace.WriteLine("WIDTH ACTIVE WINDOW" + activeScreen.WorkingArea.Width);
+            Trace.WriteLine("HEIGHT ACTIVE WINDOW" + activeScreen.WorkingArea.Height);
+            if (activeScreen.WorkingArea.Width < 1920 && activeScreen.WorkingArea.Height < 1080 - 40)
+            {
+                Trace.WriteLine("Resolution is less than FullHD");
+                Thickness m = mainUiHolder.Margin;
+                m.Left = m.Right = 50;
+                m.Top = m.Bottom = 75;
+                mainUiHolder.Margin = m;
+            }
         }
 
         public void toogleElemets(bool isEnabled)

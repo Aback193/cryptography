@@ -168,7 +168,7 @@
 
     </Window.Resources>
 
-    <DockPanel>
+    <DockPanel Name="mainUiHolder">
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem HorizontalContentAlignment="Stretch" Height="25">
                 <Grid>
