@@ -53,8 +53,8 @@ namespace DocumentFinder
             {
                 Trace.WriteLine("Resolution is less than FullHD");
                 Thickness m = mainUiHolder.Margin;
-                m.Left = m.Right = 50;
-                m.Top = m.Bottom = 75;
+                m.Left = m.Right = 60;
+                m.Top = m.Bottom = 60;
                 mainUiHolder.Margin = m;
             }
         }
