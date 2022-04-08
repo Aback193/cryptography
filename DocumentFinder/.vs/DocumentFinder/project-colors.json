@@ -10,7 +10,27 @@
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Miscellaneous Files",
       "ColorIndex": -1
+    },
+    "9befea96-9a1b-43af-aab0-8312042365f6": {
+      "ProjectGuid": "9befea96-9a1b-43af-aab0-8312042365f6",
+      "DisplayName": "DocumentFinderSetup",
+      "ColorIndex": 1
+    },
+    "4f7c787d-6d2b-4ecc-b4ce-adc0b01e1eae": {
+      "ProjectGuid": "4f7c787d-6d2b-4ecc-b4ce-adc0b01e1eae",
+      "DisplayName": "DocumentFinderSetup",
+      "ColorIndex": 2
+    },
+    "0060c88f-87ec-4dd6-a0a7-a762758cf31b": {
+      "ProjectGuid": "0060c88f-87ec-4dd6-a0a7-a762758cf31b",
+      "DisplayName": "DocumentFinderSetup",
+      "ColorIndex": 3
+    },
+    "9aa42429-4c98-4187-899d-e12a577276a8": {
+      "ProjectGuid": "9aa42429-4c98-4187-899d-e12a577276a8",
+      "DisplayName": "DocumentFinderSetup",
+      "ColorIndex": 4
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 5
 }

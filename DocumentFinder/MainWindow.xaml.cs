@@ -213,14 +213,20 @@ namespace DocumentFinder
                 if (btnStopWork.Visibility == Visibility.Visible)
                     stopButtonReset();
             }
-            else if (wasScanned == true && File.Exists(path + folderForFileCopy + pathLogFile))
+            else if (wasScanned == true && File.Exists(path + folderForFileCopy + pathLogFile) && (pdfConversionFilePaths.Count() > 0 || docConversionFilePaths.Count() > 0 || docxConversionFilePaths.Count() > 0))
                 if (btnStopWork.Visibility == Visibility.Hidden)
                     stopButtonReset();
 
-            if (startConversion && allConversionFilePaths.Count() > 0)
+            if (startConversion && allConversionFilePaths.Count() > 0 && (pdfConversionFilePaths.Count() > 0 || docConversionFilePaths.Count() > 0 || docxConversionFilePaths.Count() > 0))
             {
                 Convert convert = new Convert(allConversionFilePaths, allConversionFilePaths.Count(), path + folderForFileCopy, ocrOption.IsChecked == true ? true : false, isMultiThreading);
                 convert.startConversion();
+            }
+            else 
+            {
+                toogleElemets(true);
+                if (btnStopWork.Visibility == Visibility.Visible)
+                    stopButtonReset();
             }
         }
 
@@ -404,7 +410,6 @@ namespace DocumentFinder
                     keyWordSearch.Dispose();
 
                     toogleElemets(true);
-
                     if (stopWork == false)
                     {
                         stopButtonReset();
@@ -414,6 +419,7 @@ namespace DocumentFinder
                 {
                     MessageBox.Show("No files were coppied yet! Please click on " + btnFind.Content);
                     toogleElemets(true);
+                    stopButtonReset();
                 }
             }
             catch (Exception ex)

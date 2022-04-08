@@ -31,12 +31,10 @@ C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Release\System.V
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.csproj.AssemblyReference.cache
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.csproj.SuggestedBindingRedirects.cache
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\MainWindow.g.cs
-C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\Window1.g.cs
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\App.g.cs
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder_MarkupCompile.cache
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder_MarkupCompile.lref
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\MainWindow.baml
-C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\Window1.baml
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.g.resources
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.Properties.Resources.resources
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.csproj.GenerateResource.cache
@@ -44,3 +42,10 @@ C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\Document
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.csproj.CopyComplete
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.exe
 C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.pdb
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Release\DocumentFinder.exe.manifest
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Release\DocumentFinder.application
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Release\NLog.dll
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Release\System.Drawing.Common.dll
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\bin\Release\NLog.xml
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.exe.manifest
+C:\Users\Aback\Documents\GitHub\cryptography\DocumentFinder\obj\Release\DocumentFinder.application
